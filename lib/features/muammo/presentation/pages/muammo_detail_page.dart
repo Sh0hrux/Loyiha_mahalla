@@ -2,37 +2,37 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-import '../../data/repositories/ariza_repository.dart';
-import '../../data/models/ariza_model.dart';
+import '../../data/repositories/muammo_repository.dart';
+import '../../data/models/muammo_model.dart';
 import '../../../auth/presentation/providers/auth_provider.dart';
 import '../../../../core/widgets/loading_widget.dart';
 import '../../../../core/widgets/error_widget.dart';
 
-class ArizaDetailPage extends ConsumerStatefulWidget {
-  final String arizaId;
+class MuammoDetailPage extends ConsumerStatefulWidget {
+  final String muammoId;
 
-  const ArizaDetailPage({
+  const MuammoDetailPage({
     super.key,
-    required this.arizaId,
+    required this.muammoId,
   });
 
   @override
-  ConsumerState<ArizaDetailPage> createState() => _ArizaDetailPageState();
+  ConsumerState<MuammoDetailPage> createState() => _MuammoDetailPageState();
 }
 
-class _ArizaDetailPageState extends ConsumerState<ArizaDetailPage> {
-  late Future<ArizaModel> _arizaFuture;
+class _MuammoDetailPageState extends ConsumerState<MuammoDetailPage> {
+  late Future<MuammoModel> _muammoFuture;
   bool _isUpdating = false;
 
   @override
   void initState() {
     super.initState();
-    _loadAriza();
+    _loadMuammo();
   }
 
-  void _loadAriza() {
-    final repository = ArizaRepository();
-    _arizaFuture = repository.getArizaById(widget.arizaId);
+  void _loadMuammo() {
+    final repository = MuammoRepository();
+    _muammoFuture = repository.getMuammoById(widget.muammoId);
   }
 
   Future<void> _updateStatus(String status, String statusText) async {
@@ -41,8 +41,8 @@ class _ArizaDetailPageState extends ConsumerState<ArizaDetailPage> {
 
     String? adminResponse;
 
-    // If status is approved or rejected, ask for admin response
-    if (status == 'bajarildi' || status == 'rad_etildi') {
+    // If status is resolved or rejected, ask for admin response
+    if (status == 'hal_qilindi' || status == 'rad_etildi') {
       adminResponse = await showDialog<String>(
         context: context,
         builder: (context) {
@@ -57,14 +57,14 @@ class _ArizaDetailPageState extends ConsumerState<ArizaDetailPage> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      status == 'bajarildi' ? 'Tasdiqlash' : 'Rad etish',
+                      status == 'hal_qilindi' ? 'Hal qilish' : 'Rad etish',
                       style: const TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
                     const SizedBox(height: 16),
-                    Text('Ariza holatini "$statusText" ga o\'zgartirmoqchimisiz?'),
+                    Text('Muammo holatini "$statusText" ga o\'zgartirmoqchimisiz?'),
                     const SizedBox(height: 16),
                     TextField(
                       controller: controller,
@@ -106,7 +106,7 @@ class _ArizaDetailPageState extends ConsumerState<ArizaDetailPage> {
         context: context,
         builder: (context) => AlertDialog(
           title: const Text('Tasdiqlash'),
-          content: Text('Ariza holatini "$statusText" ga o\'zgartirmoqchimisiz?'),
+          content: Text('Muammo holatini "$statusText" ga o\'zgartirmoqchimisiz?'),
           actions: [
             TextButton(
               onPressed: () => Navigator.pop(context, false),
@@ -126,23 +126,22 @@ class _ArizaDetailPageState extends ConsumerState<ArizaDetailPage> {
     setState(() => _isUpdating = true);
 
     try {
-      final repository = ArizaRepository();
-      await repository.updateArizaStatus(
-        arizaId: widget.arizaId,
+      final repository = MuammoRepository();
+      await repository.updateMuammoStatus(
+        muammoId: widget.muammoId,
         status: status,
         adminResponse: adminResponse,
-        adminId: currentUser.id,
       );
 
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Ariza holati "$statusText" ga o\'zgartirildi'),
+            content: Text('Muammo holati "$statusText" ga o\'zgartirildi'),
             backgroundColor: Colors.green,
           ),
         );
         setState(() {
-          _loadAriza();
+          _loadMuammo();
         });
       }
     } catch (e) {
@@ -167,7 +166,7 @@ class _ArizaDetailPageState extends ConsumerState<ArizaDetailPage> {
         return Colors.blue;
       case 'ko\'rilmoqda':
         return Colors.orange;
-      case 'bajarildi':
+      case 'hal_qilindi':
         return Colors.green;
       case 'rad_etildi':
         return Colors.red;
@@ -183,10 +182,10 @@ class _ArizaDetailPageState extends ConsumerState<ArizaDetailPage> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Ariza Tafsilotlari'),
+        title: const Text('Muammo Tafsilotlari'),
       ),
-      body: FutureBuilder<ArizaModel>(
-        future: _arizaFuture,
+      body: FutureBuilder<MuammoModel>(
+        future: _muammoFuture,
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const LoadingWidget();
@@ -197,23 +196,23 @@ class _ArizaDetailPageState extends ConsumerState<ArizaDetailPage> {
               message: snapshot.error.toString(),
               onRetry: () {
                 setState(() {
-                  _loadAriza();
+                  _loadMuammo();
                 });
               },
             );
           }
 
           if (!snapshot.hasData) {
-            return const Center(child: Text('Ariza topilmadi'));
+            return const Center(child: Text('Muammo topilmadi'));
           }
 
-          final ariza = snapshot.data!;
-          final statusColor = _getStatusColor(ariza.status);
+          final muammo = snapshot.data!;
+          final statusColor = _getStatusColor(muammo.status);
 
           return RefreshIndicator(
             onRefresh: () async {
               setState(() {
-                _loadAriza();
+                _loadMuammo();
               });
             },
             child: SingleChildScrollView(
@@ -244,7 +243,7 @@ class _ArizaDetailPageState extends ConsumerState<ArizaDetailPage> {
                                   style: Theme.of(context).textTheme.bodySmall,
                                 ),
                                 Text(
-                                  ariza.statusText,
+                                  muammo.statusText,
                                   style: Theme.of(context).textTheme.titleLarge?.copyWith(
                                         color: statusColor,
                                         fontWeight: FontWeight.bold,
@@ -269,20 +268,20 @@ class _ArizaDetailPageState extends ConsumerState<ArizaDetailPage> {
                           _InfoRow(
                             icon: Icons.category,
                             label: 'Kategoriya',
-                            value: ariza.category,
+                            value: muammo.category,
                           ),
                           const Divider(height: 24),
                           _InfoRow(
                             icon: Icons.calendar_today,
                             label: 'Yuborilgan sana',
-                            value: DateFormat('dd.MM.yyyy HH:mm').format(ariza.createdAt),
+                            value: DateFormat('dd.MM.yyyy HH:mm').format(muammo.createdAt),
                           ),
-                          if (ariza.completedAt != null) ...[
+                          if (muammo.updatedAt != null) ...[
                             const Divider(height: 24),
                             _InfoRow(
                               icon: Icons.check_circle,
-                              label: 'Bajarilgan sana',
-                              value: DateFormat('dd.MM.yyyy HH:mm').format(ariza.completedAt!),
+                              label: 'Yangilangan sana',
+                              value: DateFormat('dd.MM.yyyy HH:mm').format(muammo.updatedAt!),
                             ),
                           ],
                         ],
@@ -309,13 +308,13 @@ class _ArizaDetailPageState extends ConsumerState<ArizaDetailPage> {
                             _InfoRow(
                               icon: Icons.person,
                               label: 'F.I.O',
-                              value: ariza.userFullName,
+                              value: muammo.userFullName,
                             ),
                             const Divider(height: 24),
                             _InfoRow(
                               icon: Icons.phone,
                               label: 'Telefon',
-                              value: ariza.userPhone,
+                              value: muammo.userPhone,
                             ),
                           ],
                         ),
@@ -323,6 +322,38 @@ class _ArizaDetailPageState extends ConsumerState<ArizaDetailPage> {
                     ),
                     const SizedBox(height: 12),
                   ],
+
+                  // Location
+                  Card(
+                    child: Padding(
+                      padding: const EdgeInsets.all(16),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'Manzil',
+                            style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                                  fontWeight: FontWeight.bold,
+                                ),
+                          ),
+                          const SizedBox(height: 12),
+                          Row(
+                            children: [
+                              const Icon(Icons.location_on, size: 20, color: Colors.red),
+                              const SizedBox(width: 12),
+                              Expanded(
+                                child: Text(
+                                  muammo.location,
+                                  style: Theme.of(context).textTheme.bodyLarge,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 12),
 
                   // Description
                   Card(
@@ -332,14 +363,14 @@ class _ArizaDetailPageState extends ConsumerState<ArizaDetailPage> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            'Ariza matni',
+                            'Muammo tavsifi',
                             style: Theme.of(context).textTheme.titleMedium?.copyWith(
                                   fontWeight: FontWeight.bold,
                                 ),
                           ),
                           const SizedBox(height: 12),
                           Text(
-                            ariza.description,
+                            muammo.description,
                             style: Theme.of(context).textTheme.bodyLarge,
                           ),
                         ],
@@ -349,7 +380,7 @@ class _ArizaDetailPageState extends ConsumerState<ArizaDetailPage> {
                   const SizedBox(height: 12),
 
                   // Images
-                  if (ariza.imageUrls.isNotEmpty) ...[
+                  if (muammo.imageUrls.isNotEmpty) ...[
                     Card(
                       child: Padding(
                         padding: const EdgeInsets.all(16),
@@ -371,12 +402,12 @@ class _ArizaDetailPageState extends ConsumerState<ArizaDetailPage> {
                                 crossAxisSpacing: 8,
                                 mainAxisSpacing: 8,
                               ),
-                              itemCount: ariza.imageUrls.length,
+                              itemCount: muammo.imageUrls.length,
                               itemBuilder: (context, index) {
                                 return ClipRRect(
                                   borderRadius: BorderRadius.circular(8),
                                   child: CachedNetworkImage(
-                                    imageUrl: ariza.imageUrls[index],
+                                    imageUrl: muammo.imageUrls[index],
                                     fit: BoxFit.cover,
                                     placeholder: (context, url) => Container(
                                       color: Colors.grey[300],
@@ -400,7 +431,7 @@ class _ArizaDetailPageState extends ConsumerState<ArizaDetailPage> {
                   ],
 
                   // Admin Response
-                  if (ariza.adminResponse != null) ...[
+                  if (muammo.adminResponse != null) ...[
                     Card(
                       color: Colors.green[50],
                       child: Padding(
@@ -423,7 +454,7 @@ class _ArizaDetailPageState extends ConsumerState<ArizaDetailPage> {
                             ),
                             const SizedBox(height: 12),
                             Text(
-                              ariza.adminResponse!,
+                              muammo.adminResponse!,
                               style: Theme.of(context).textTheme.bodyLarge,
                             ),
                           ],
@@ -434,7 +465,7 @@ class _ArizaDetailPageState extends ConsumerState<ArizaDetailPage> {
                   ],
 
                   // Admin Actions
-                  if (isAdmin && ariza.status != 'bajarildi' && ariza.status != 'rad_etildi') ...[
+                  if (isAdmin && muammo.status != 'hal_qilindi' && muammo.status != 'rad_etildi') ...[
                     Card(
                       child: Padding(
                         padding: const EdgeInsets.all(16),
@@ -442,7 +473,7 @@ class _ArizaDetailPageState extends ConsumerState<ArizaDetailPage> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              'Ariza holatini o\'zgartirish',
+                              'Muammo holatini o\'zgartirish',
                               style: Theme.of(context).textTheme.titleMedium?.copyWith(
                                     fontWeight: FontWeight.bold,
                                   ),
@@ -473,9 +504,9 @@ class _ArizaDetailPageState extends ConsumerState<ArizaDetailPage> {
                                   child: ElevatedButton.icon(
                                     onPressed: _isUpdating
                                         ? null
-                                        : () => _updateStatus('bajarildi', 'Bajarildi'),
+                                        : () => _updateStatus('hal_qilindi', 'Hal qilindi'),
                                     icon: const Icon(Icons.check_circle),
-                                    label: const Text('Tasdiqlash'),
+                                    label: const Text('Hal qilindi'),
                                     style: ElevatedButton.styleFrom(
                                       backgroundColor: Colors.green,
                                       foregroundColor: Colors.white,

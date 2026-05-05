@@ -48,12 +48,18 @@ class _LoginPageState extends ConsumerState<LoginPage>
     super.dispose();
   }
 
-  void _signIn() {
+  void _signIn() async {
     if (_formKey.currentState!.validate()) {
-      ref.read(authStateProvider.notifier).signIn(
+      await ref.read(authStateProvider.notifier).signIn(
             email: _emailController.text.trim(),
             password: _passwordController.text,
           );
+      
+      // Refresh current user after successful login
+      final authState = ref.read(authStateProvider);
+      if (authState.status == AuthStatus.authenticated) {
+        await ref.read(currentUserProvider.notifier).refresh();
+      }
     }
   }
 
@@ -61,15 +67,9 @@ class _LoginPageState extends ConsumerState<LoginPage>
   Widget build(BuildContext context) {
     final authState = ref.watch(authStateProvider);
 
-    // Listen to auth state changes
+    // Listen only for errors
     ref.listen<AuthState>(authStateProvider, (previous, next) {
-      if (next.status == AuthStatus.authenticated) {
-        if (next.user?.fullName.isEmpty ?? true) {
-          context.go('/complete-profile');
-        } else {
-          context.go('/home');
-        }
-      } else if (next.status == AuthStatus.error) {
+      if (next.status == AuthStatus.error) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text(next.errorMessage ?? 'Xatolik yuz berdi'),
@@ -101,56 +101,56 @@ class _LoginPageState extends ConsumerState<LoginPage>
                     children: [
                       // Logo with gradient background
                       Container(
-                        padding: const EdgeInsets.all(24),
+                        padding: const EdgeInsets.all(20),
                         decoration: BoxDecoration(
-                          color: Colors.white.withOpacity(0.2),
+                          color: Colors.white.withOpacity(0.25),
                           shape: BoxShape.circle,
                           border: Border.all(
-                            color: Colors.white.withOpacity(0.3),
+                            color: Colors.white.withOpacity(0.4),
                             width: 2,
                           ),
                         ),
                         child: const Icon(
                           Icons.location_city,
-                          size: 80,
+                          size: 64,
                           color: Colors.white,
                         ),
                       ),
-                      const SizedBox(height: 32),
+                      const SizedBox(height: 24),
 
                       // Title
                       const Text(
                         'Mahalla Xizmati',
                         style: TextStyle(
-                          fontSize: 32,
+                          fontSize: 28,
                           fontWeight: FontWeight.bold,
                           color: Colors.white,
                         ),
                         textAlign: TextAlign.center,
                       ),
-                      const SizedBox(height: 8),
+                      const SizedBox(height: 6),
                       Text(
                         'Rasmiy mobil ilova',
                         style: TextStyle(
-                          fontSize: 16,
+                          fontSize: 14,
                           color: Colors.white.withOpacity(0.95),
                           fontWeight: FontWeight.w500,
                         ),
                         textAlign: TextAlign.center,
                       ),
-                      const SizedBox(height: 48),
+                      const SizedBox(height: 32),
 
                       // Login Form Card
                       Container(
-                        padding: const EdgeInsets.all(24),
+                        padding: const EdgeInsets.all(28),
                         decoration: BoxDecoration(
                           color: Colors.white,
                           borderRadius: BorderRadius.circular(24),
                           boxShadow: [
                             BoxShadow(
-                              color: Colors.black.withOpacity(0.1),
-                              blurRadius: 20,
-                              offset: const Offset(0, 10),
+                              color: Colors.black.withOpacity(0.15),
+                              blurRadius: 24,
+                              offset: const Offset(0, 12),
                             ),
                           ],
                         ),
@@ -163,23 +163,66 @@ class _LoginPageState extends ConsumerState<LoginPage>
                                 'Kirish',
                                 style: Theme.of(context).textTheme.headlineMedium?.copyWith(
                                       fontWeight: FontWeight.bold,
-                                      color: AppTheme.primaryColor,
+                                      color: const Color(0xFF4F46E5),
+                                      fontSize: 26,
                                     ),
                                 textAlign: TextAlign.center,
                               ),
-                              const SizedBox(height: 32),
+                              const SizedBox(height: 28),
 
                               // Email Input
                               TextFormField(
                                 controller: _emailController,
                                 keyboardType: TextInputType.emailAddress,
-                                style: const TextStyle(fontSize: 16),
+                                style: const TextStyle(
+                                  fontSize: 16,
+                                  color: Color(0xFF1F2937),
+                                  fontWeight: FontWeight.w500,
+                                ),
                                 decoration: InputDecoration(
                                   labelText: 'Email',
+                                  labelStyle: const TextStyle(
+                                    color: Color(0xFF6B7280),
+                                    fontSize: 15,
+                                    fontWeight: FontWeight.w600,
+                                  ),
                                   hintText: 'example@gmail.com',
-                                  prefixIcon: const Icon(Icons.email_outlined),
+                                  hintStyle: TextStyle(
+                                    color: Colors.grey[400],
+                                    fontSize: 15,
+                                  ),
+                                  prefixIcon: const Icon(
+                                    Icons.email_outlined,
+                                    color: Color(0xFF6366F1),
+                                    size: 22,
+                                  ),
                                   filled: true,
-                                  fillColor: Colors.grey[50],
+                                  fillColor: const Color(0xFFF9FAFB),
+                                  border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(14),
+                                    borderSide: const BorderSide(
+                                      color: Color(0xFFE5E7EB),
+                                      width: 1.5,
+                                    ),
+                                  ),
+                                  enabledBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(14),
+                                    borderSide: const BorderSide(
+                                      color: Color(0xFFE5E7EB),
+                                      width: 1.5,
+                                    ),
+                                  ),
+                                  focusedBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(14),
+                                    borderSide: const BorderSide(
+                                      color: Color(0xFF6366F1),
+                                      width: 2,
+                                    ),
+                                  ),
+                                  contentPadding: const EdgeInsets.symmetric(
+                                    horizontal: 16,
+                                    vertical: 18,
+                                  ),
                                 ),
                                 validator: (value) {
                                   if (value == null || value.isEmpty) {
@@ -191,24 +234,67 @@ class _LoginPageState extends ConsumerState<LoginPage>
                                   return null;
                                 },
                               ),
-                              const SizedBox(height: 20),
+                              const SizedBox(height: 18),
 
                               // Password Input
                               TextFormField(
                                 controller: _passwordController,
                                 obscureText: _obscurePassword,
-                                style: const TextStyle(fontSize: 16),
+                                style: const TextStyle(
+                                  fontSize: 16,
+                                  color: Color(0xFF1F2937),
+                                  fontWeight: FontWeight.w500,
+                                ),
                                 decoration: InputDecoration(
                                   labelText: 'Parol',
+                                  labelStyle: const TextStyle(
+                                    color: Color(0xFF6B7280),
+                                    fontSize: 15,
+                                    fontWeight: FontWeight.w600,
+                                  ),
                                   hintText: '••••••••',
-                                  prefixIcon: const Icon(Icons.lock_outline),
+                                  hintStyle: TextStyle(
+                                    color: Colors.grey[400],
+                                    fontSize: 15,
+                                  ),
+                                  prefixIcon: const Icon(
+                                    Icons.lock_outline,
+                                    color: Color(0xFF6366F1),
+                                    size: 22,
+                                  ),
                                   filled: true,
-                                  fillColor: Colors.grey[50],
+                                  fillColor: const Color(0xFFF9FAFB),
+                                  border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(14),
+                                    borderSide: const BorderSide(
+                                      color: Color(0xFFE5E7EB),
+                                      width: 1.5,
+                                    ),
+                                  ),
+                                  enabledBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(14),
+                                    borderSide: const BorderSide(
+                                      color: Color(0xFFE5E7EB),
+                                      width: 1.5,
+                                    ),
+                                  ),
+                                  focusedBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(14),
+                                    borderSide: const BorderSide(
+                                      color: Color(0xFF6366F1),
+                                      width: 2,
+                                    ),
+                                  ),
+                                  contentPadding: const EdgeInsets.symmetric(
+                                    horizontal: 16,
+                                    vertical: 18,
+                                  ),
                                   suffixIcon: IconButton(
                                     icon: Icon(
                                       _obscurePassword
                                           ? Icons.visibility_off_outlined
                                           : Icons.visibility_outlined,
+                                      color: const Color(0xFF9CA3AF),
                                     ),
                                     onPressed: () {
                                       setState(() {
@@ -227,7 +313,7 @@ class _LoginPageState extends ConsumerState<LoginPage>
                                   return null;
                                 },
                               ),
-                              const SizedBox(height: 12),
+                              const SizedBox(height: 10),
 
                               // Forgot Password
                               Align(
@@ -294,11 +380,10 @@ class _LoginPageState extends ConsumerState<LoginPage>
                               const SizedBox(height: 24),
 
                               // Sign Up Link
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
+                              Column(
                                 children: [
                                   Text(
-                                    'Hisobingiz yo\'qmi? ',
+                                    'Hisobingiz yo\'qmi?',
                                     style: TextStyle(
                                       color: Colors.grey[600],
                                       fontSize: 15,

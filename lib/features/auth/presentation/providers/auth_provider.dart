@@ -120,7 +120,7 @@ class AuthStateNotifier extends StateNotifier<AuthState> {
         uid: userCredential.user!.uid,
         email: userCredential.user!.email!,
       );
-      print('🟢 User created/fetched: ${user.id}'); // DEBUG
+      print('🟢 User created/fetched: ${user.id}, role: ${user.role}'); // DEBUG
 
       await _authRepository.saveLoginState(
         userId: user.id,
@@ -132,7 +132,7 @@ class AuthStateNotifier extends StateNotifier<AuthState> {
         status: AuthStatus.authenticated,
         user: user,
       );
-      print('🟢 State set to authenticated'); // DEBUG
+      print('🟢 State set to authenticated, redirecting...'); // DEBUG
     } catch (e) {
       print('🔴 Error in signIn: $e'); // DEBUG
       state = state.copyWith(

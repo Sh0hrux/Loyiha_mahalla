@@ -96,13 +96,24 @@ class NavbatlarPage extends ConsumerWidget {
                         return _ModernNavbatCard(
                           navbat: navbat,
                           isAdmin: isAdmin,
-                          onTap: () {
-                            // TODO: Navigate to detail page
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(
-                                  content: Text('Navbat tafsilotlari - Tez orada')),
-                            );
-                          },
+                          onUpdateStatus: isAdmin
+                              ? (status) async {
+                                  await ref
+                                      .read(updateNavbatStatusProvider.notifier)
+                                      .updateStatus(
+                                        navbatId: navbat.id,
+                                        status: status,
+                                      );
+                                  if (context.mounted) {
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      const SnackBar(
+                                        content: Text('Navbat holati o\'zgartirildi'),
+                                        backgroundColor: Colors.green,
+                                      ),
+                                    );
+                                  }
+                                }
+                              : null,
                           onCancel: isAdmin
                               ? null
                               : () async {
@@ -196,13 +207,13 @@ class NavbatlarPage extends ConsumerWidget {
 class _ModernNavbatCard extends StatelessWidget {
   final dynamic navbat;
   final bool isAdmin;
-  final VoidCallback onTap;
+  final Function(String)? onUpdateStatus;
   final VoidCallback? onCancel;
 
   const _ModernNavbatCard({
     required this.navbat,
     required this.isAdmin,
-    required this.onTap,
+    this.onUpdateStatus,
     this.onCancel,
   });
 
@@ -257,16 +268,13 @@ class _ModernNavbatCard extends StatelessWidget {
       ),
       child: Material(
         color: Colors.transparent,
-        child: InkWell(
-          onTap: onTap,
-          borderRadius: BorderRadius.circular(20),
-          child: Padding(
-            padding: const EdgeInsets.all(16),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                // Header
-                Row(
+        child: Padding(
+          padding: const EdgeInsets.all(16),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // Header
+              Row(
                   children: [
                     Container(
                       padding: const EdgeInsets.all(12),
@@ -344,11 +352,11 @@ class _ModernNavbatCard extends StatelessWidget {
                       ),
                     ),
                   ],
-                ),
-                const SizedBox(height: 16),
+              ),
+              const SizedBox(height: 16),
 
-                // Purpose
-                Container(
+              // Purpose
+              Container(
                   padding: const EdgeInsets.all(12),
                   decoration: BoxDecoration(
                     color: Colors.grey[50],
@@ -373,77 +381,143 @@ class _ModernNavbatCard extends StatelessWidget {
                       ),
                     ],
                   ),
-                ),
+              ),
 
-                // User info (Admin only)
-                if (isAdmin) ...[
-                  const SizedBox(height: 12),
-                  Container(
-                    padding: const EdgeInsets.all(12),
-                    decoration: BoxDecoration(
-                      color: AppTheme.primaryColor.withOpacity(0.05),
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    child: Row(
-                      children: [
-                        Icon(
-                          Icons.person_outline,
-                          size: 18,
-                          color: AppTheme.primaryColor,
-                        ),
-                        const SizedBox(width: 8),
-                        Expanded(
-                          child: Text(
-                            navbat.userFullName,
-                            style: TextStyle(
-                              fontSize: 13,
-                              color: Colors.grey[800],
-                              fontWeight: FontWeight.w500,
+              // User info (Admin only)
+              if (isAdmin) ...[
+                const SizedBox(height: 12),
+                Container(
+                  padding: const EdgeInsets.all(12),
+                  decoration: BoxDecoration(
+                    color: AppTheme.primaryColor.withOpacity(0.05),
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: Column(
+                    children: [
+                      Row(
+                        children: [
+                          Icon(
+                            Icons.person_outline,
+                            size: 18,
+                            color: AppTheme.primaryColor,
+                          ),
+                          const SizedBox(width: 8),
+                          Expanded(
+                            child: Text(
+                              navbat.userFullName,
+                              style: TextStyle(
+                                fontSize: 13,
+                                color: Colors.grey[800],
+                                fontWeight: FontWeight.w500,
+                              ),
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
                             ),
                           ),
-                        ),
-                        const SizedBox(width: 12),
-                        Icon(
-                          Icons.phone_outlined,
-                          size: 18,
-                          color: AppTheme.primaryColor,
-                        ),
-                        const SizedBox(width: 8),
-                        Text(
-                          navbat.userPhone,
-                          style: TextStyle(
-                            fontSize: 13,
-                            color: Colors.grey[800],
-                            fontWeight: FontWeight.w500,
+                        ],
+                      ),
+                      const SizedBox(height: 8),
+                      Row(
+                        children: [
+                          Icon(
+                            Icons.phone_outlined,
+                            size: 18,
+                            color: AppTheme.primaryColor,
+                          ),
+                          const SizedBox(width: 8),
+                          Expanded(
+                            child: Text(
+                              navbat.userPhone,
+                              style: TextStyle(
+                                fontSize: 13,
+                                color: Colors.grey[800],
+                                fontWeight: FontWeight.w500,
+                              ),
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+
+              // Admin Actions (Admin only)
+              if (isAdmin &&
+                  navbat.status != 'tugallandi' &&
+                  navbat.status != 'bekor_qilindi') ...[
+                const SizedBox(height: 12),
+                Row(
+                  children: [
+                    if (navbat.status == 'kutilmoqda') ...[
+                      Expanded(
+                        child: ElevatedButton.icon(
+                          onPressed: () => onUpdateStatus?.call('tasdiqlandi'),
+                          icon: const Icon(Icons.check_circle, size: 18),
+                          label: const Text('Tasdiqlash'),
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.green,
+                            foregroundColor: Colors.white,
+                            padding: const EdgeInsets.symmetric(vertical: 10),
                           ),
                         ),
-                      ],
-                    ),
-                  ),
-                ],
-
-                // Cancel button (User only, if not past and not cancelled)
-                if (!isAdmin &&
-                    !isPast &&
-                    navbat.status != 'bekor_qilindi' &&
-                    navbat.status != 'tugallandi') ...[
-                  const SizedBox(height: 12),
-                  SizedBox(
-                    width: double.infinity,
-                    child: OutlinedButton.icon(
-                      onPressed: onCancel,
-                      icon: const Icon(Icons.cancel_outlined),
-                      label: const Text('Bekor qilish'),
-                      style: OutlinedButton.styleFrom(
-                        foregroundColor: Colors.red,
-                        side: const BorderSide(color: Colors.red),
-                        padding: const EdgeInsets.symmetric(vertical: 12),
+                      ),
+                      const SizedBox(width: 8),
+                    ],
+                    if (navbat.status == 'tasdiqlandi') ...[
+                      Expanded(
+                        child: ElevatedButton.icon(
+                          onPressed: () => onUpdateStatus?.call('tugallandi'),
+                          icon: const Icon(Icons.done_all, size: 18),
+                          label: const Text('Tugallandi'),
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.grey[700],
+                            foregroundColor: Colors.white,
+                            padding: const EdgeInsets.symmetric(vertical: 10),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(width: 8),
+                    ],
+                    Expanded(
+                      child: OutlinedButton.icon(
+                        onPressed: () => onUpdateStatus?.call('bekor_qilindi'),
+                        icon: const Icon(Icons.cancel, size: 18),
+                        label: const Text('Bekor qilish'),
+                        style: OutlinedButton.styleFrom(
+                          foregroundColor: Colors.red,
+                          side: const BorderSide(color: Colors.red),
+                          padding: const EdgeInsets.symmetric(vertical: 10),
+                        ),
                       ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ],
-            ),
+
+              // Cancel button (User only, if not past and not cancelled)
+              if (!isAdmin &&
+                  !isPast &&
+                  navbat.status != 'bekor_qilindi' &&
+                  navbat.status != 'tugallandi') ...[
+                const SizedBox(height: 12),
+                SizedBox(
+                  width: double.infinity,
+                  child: OutlinedButton.icon(
+                    onPressed: onCancel,
+                    icon: const Icon(Icons.cancel_outlined),
+                    label: const Text('Bekor qilish'),
+                    style: OutlinedButton.styleFrom(
+                      foregroundColor: Colors.red,
+                      side: const BorderSide(color: Colors.red),
+                      padding: const EdgeInsets.symmetric(vertical: 12),
+                    ),
+                  ),
+                ),
+              ],
+            ],
           ),
         ),
       ),

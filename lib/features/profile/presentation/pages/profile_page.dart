@@ -481,6 +481,7 @@ class ProfilePage extends ConsumerWidget {
                   ],
                 ),
               ),
+              ]),
             ),
           ],
         ),

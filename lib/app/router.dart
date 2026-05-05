@@ -7,57 +7,65 @@ import '../features/auth/presentation/pages/signup_page.dart';
 import '../features/auth/presentation/pages/forgot_password_page.dart';
 import '../features/auth/presentation/pages/complete_profile_page.dart';
 import '../features/auth/presentation/providers/auth_provider.dart';
+import '../features/auth/data/models/user_model.dart';
 import '../features/home/presentation/pages/home_page.dart';
 import '../features/ariza/presentation/pages/arizalar_page.dart';
 import '../features/ariza/presentation/pages/yangi_ariza_page.dart';
 import '../features/ariza/presentation/pages/ariza_detail_page.dart';
 import '../features/muammo/presentation/pages/muammolar_page.dart';
 import '../features/muammo/presentation/pages/yangi_muammo_page.dart';
+import '../features/muammo/presentation/pages/muammo_detail_page.dart';
 import '../features/navbat/presentation/pages/navbatlar_page.dart';
 import '../features/navbat/presentation/pages/yangi_navbat_page.dart';
+import '../features/navbat/presentation/pages/navbat_detail_page.dart';
 import '../features/elon/presentation/pages/elonlar_page.dart';
 import '../features/elon/presentation/pages/yangi_elon_page.dart';
 import '../features/elon/presentation/pages/elon_detail_page.dart';
 import '../features/mahalla_info/presentation/pages/mahalla_info_page.dart';
 import '../features/xodimlar/presentation/pages/xodimlar_page.dart';
 import '../features/profile/presentation/pages/profile_page.dart';
+import '../features/admin/presentation/pages/admin_dashboard_page.dart';
 
 // Router Provider
 final routerProvider = Provider<GoRouter>((ref) {
-  final currentUser = ref.watch(currentUserProvider);
+  final notifier = ValueNotifier<AsyncValue<UserModel?>>(const AsyncValue.loading());
+  
+  ref.listen<AsyncValue<UserModel?>>(currentUserProvider, (_, next) {
+    notifier.value = next;
+  });
 
   return GoRouter(
-    initialLocation: '/login',
+    initialLocation: '/splash',
+    refreshListenable: notifier,
     redirect: (context, state) {
-      final isLoading = currentUser is AsyncLoading;
-      final isLoggedIn = currentUser.value != null;
-      final isProfileComplete = currentUser.value?.fullName.isNotEmpty ?? false;
+      // Get current user from provider
+      final currentUserAsync = ref.read(currentUserProvider);
+      
+      final isLoading = currentUserAsync is AsyncLoading;
+      final user = currentUserAsync.value;
+      final isLoggedIn = user != null;
+      final isProfileComplete = user?.fullName.isNotEmpty ?? false;
+      final isAdmin = user?.role == 'admin';
 
-      final isGoingToLogin = state.matchedLocation == '/login';
-      final isGoingToSignUp = state.matchedLocation == '/signup';
-      final isGoingToForgotPassword = state.matchedLocation == '/forgot-password';
-      final isGoingToCompleteProfile = state.matchedLocation == '/complete-profile';
-      final isGoingToSplash = state.matchedLocation == '/splash';
+      final path = state.matchedLocation;
+      final isGoingToLogin = path == '/login';
+      final isGoingToSignUp = path == '/signup';
+      final isGoingToForgotPassword = path == '/forgot-password';
+      final isGoingToCompleteProfile = path == '/complete-profile';
+      final isGoingToSplash = path == '/splash';
+      final isGoingToAdmin = path.startsWith('/admin');
 
-      // Show loading splash screen
-      if (isLoading && !isGoingToSplash) {
-        return '/splash';
+      print('🔵 Router redirect: path=$path, isLoggedIn=$isLoggedIn, isAdmin=$isAdmin, isProfileComplete=$isProfileComplete'); // DEBUG
+
+      // Show splash while loading
+      if (isLoading) {
+        if (!isGoingToSplash) return '/splash';
+        return null;
       }
 
-      // Loading finished, redirect from splash
-      if (!isLoading && isGoingToSplash) {
-        if (!isLoggedIn) {
-          return '/login';
-        } else if (!isProfileComplete) {
-          return '/complete-profile';
-        } else {
-          return '/home';
-        }
-      }
-
-      // Not logged in
+      // Not logged in - allow only auth pages
       if (!isLoggedIn) {
-        if (isGoingToLogin || isGoingToSignUp || isGoingToForgotPassword) {
+        if (isGoingToLogin || isGoingToSignUp || isGoingToForgotPassword || isGoingToSplash) {
           return null;
         }
         return '/login';
@@ -65,15 +73,25 @@ final routerProvider = Provider<GoRouter>((ref) {
 
       // Logged in but profile incomplete
       if (!isProfileComplete) {
-        if (isGoingToCompleteProfile) {
-          return null;
-        }
+        if (isGoingToCompleteProfile) return null;
         return '/complete-profile';
       }
 
-      // Logged in and profile complete
-      if (isGoingToLogin || isGoingToSignUp || isGoingToForgotPassword || isGoingToCompleteProfile) {
-        return '/home';
+      // Profile complete - redirect from auth pages
+      if (isGoingToLogin || isGoingToSignUp || isGoingToForgotPassword || isGoingToCompleteProfile || isGoingToSplash) {
+        final destination = isAdmin ? '/admin/dashboard' : '/home';
+        print('🔵 Redirecting to: $destination'); // DEBUG
+        return destination;
+      }
+
+      // Admin access control
+      if (isGoingToAdmin && !isAdmin) {
+        return '/home'; // Fuqaro can't access admin
+      }
+
+      // Redirect admin from home to dashboard
+      if (isAdmin && path == '/home') {
+        return '/admin/dashboard';
       }
 
       return null;
@@ -134,6 +152,13 @@ final routerProvider = Provider<GoRouter>((ref) {
         path: '/yangi-muammo',
         builder: (context, state) => const YangiMuammoPage(),
       ),
+      GoRoute(
+        path: '/muammo/:id',
+        builder: (context, state) {
+          final muammoId = state.pathParameters['id']!;
+          return MuammoDetailPage(muammoId: muammoId);
+        },
+      ),
 
       // Navbat Routes
       GoRoute(
@@ -143,6 +168,13 @@ final routerProvider = Provider<GoRouter>((ref) {
       GoRoute(
         path: '/yangi-navbat',
         builder: (context, state) => const YangiNavbatPage(),
+      ),
+      GoRoute(
+        path: '/navbat/:id',
+        builder: (context, state) {
+          final navbatId = state.pathParameters['id']!;
+          return NavbatDetailPage(navbatId: navbatId);
+        },
       ),
 
       // Elon Routes
@@ -180,10 +212,16 @@ final routerProvider = Provider<GoRouter>((ref) {
         builder: (context, state) => const ProfilePage(),
       ),
 
+      // Admin Routes
+      GoRoute(
+        path: '/admin/dashboard',
+        builder: (context, state) => const AdminDashboardPage(),
+      ),
+
       // TODO: Add more routes for other features
       // - /muammo/:id (detail page)
-      // - /hisobotlar
-      // - /statistika
+      // - /admin/users (foydalanuvchilar)
+      // - /admin/reports (hisobotlar)
     ],
     errorBuilder: (context, state) => Scaffold(
       body: Center(
