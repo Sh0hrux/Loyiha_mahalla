@@ -1,0 +1,15 @@
+{
+  "@@locale": "uz",
+  "appTitle": "Mahalla Qo'mitasi",
+  "login": "Kirish",
+  "phoneNumber": "Telefon raqam",
+  "enterPhoneNumber": "Telefon raqamni kiriting",
+  "sendCode": "Kod yuborish",
+  "verificationCode": "Tasdiqlash kodi",
+  "verify": "Tasdiqlash",
+  "resendCode": "Kodni qayta yuborish",
+  "home": "Bosh sahifa",
+  "profile": "Profil",
+  "settings": "Sozlamalar",
+  "logout": "Chiqish"
+}
