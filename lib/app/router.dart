@@ -25,6 +25,7 @@ import '../features/mahalla_info/presentation/pages/mahalla_info_page.dart';
 import '../features/xodimlar/presentation/pages/xodimlar_page.dart';
 import '../features/profile/presentation/pages/profile_page.dart';
 import '../features/admin/presentation/pages/admin_dashboard_page.dart';
+import '../features/users/presentation/pages/foydalanuvchilar_page.dart';
 
 // Router Provider
 final routerProvider = Provider<GoRouter>((ref) {
@@ -217,10 +218,12 @@ final routerProvider = Provider<GoRouter>((ref) {
         path: '/admin/dashboard',
         builder: (context, state) => const AdminDashboardPage(),
       ),
+      GoRoute(
+        path: '/admin/foydalanuvchilar',
+        builder: (context, state) => const FoydalanuvchilarPage(),
+      ),
 
       // TODO: Add more routes for other features
-      // - /muammo/:id (detail page)
-      // - /admin/users (foydalanuvchilar)
       // - /admin/reports (hisobotlar)
     ],
     errorBuilder: (context, state) => Scaffold(

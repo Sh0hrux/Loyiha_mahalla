@@ -264,9 +264,7 @@ class AdminDashboardPage extends ConsumerWidget {
                       subtitle: 'Foydalanuvchilarni boshqarish',
                       color: AppTheme.primaryColor,
                       onTap: () {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(content: Text('Tez orada')),
-                        );
+                        context.push('/admin/foydalanuvchilar');
                       },
                     ),
                     const SizedBox(height: 12),
