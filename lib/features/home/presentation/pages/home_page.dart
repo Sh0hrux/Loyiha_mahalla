@@ -376,13 +376,11 @@ class HomePage extends ConsumerWidget {
                               ),
                               _ModernMenuCard(
                                 icon: Icons.bar_chart_outlined,
-                                title: 'Statistika',
-                                subtitle: 'Hisobotlar',
+                                title: 'Hisobotlar',
+                                subtitle: 'Statistika va tahlil',
                                 gradientColors: const [Color(0xFF10B981), Color(0xFF059669)],
                                 onTap: () {
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    const SnackBar(content: Text('Statistika - Tez orada')),
-                                  );
+                                  context.push('/admin/hisobotlar');
                                 },
                               ),
                             ],

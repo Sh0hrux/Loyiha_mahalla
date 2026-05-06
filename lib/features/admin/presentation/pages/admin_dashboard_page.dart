@@ -275,9 +275,7 @@ class AdminDashboardPage extends ConsumerWidget {
                       subtitle: 'Statistika va hisobotlar',
                       color: AppTheme.accentColor,
                       onTap: () {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(content: Text('Tez orada')),
-                        );
+                        context.push('/admin/hisobotlar');
                       },
                     ),
                     const SizedBox(height: 12),
