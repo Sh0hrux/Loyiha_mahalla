@@ -486,6 +486,11 @@ class _CompleteProfilePageState extends ConsumerState<CompleteProfilePage> {
       ),
       child: DropdownButtonFormField<String>(
         value: value,
+        dropdownColor: Colors.white, // Dropdown menu oq rangda
+        style: const TextStyle(
+          fontSize: 15,
+          color: Color(0xFF1F2937), // Qora matn
+        ),
         decoration: InputDecoration(
           labelText: label,
           hintText: hint,
@@ -558,6 +563,11 @@ class _CompleteProfilePageState extends ConsumerState<CompleteProfilePage> {
       ),
       child: DropdownButtonFormField<String>(
         value: _selectedMahallaId,
+        dropdownColor: Colors.white, // Dropdown menu oq rangda
+        style: const TextStyle(
+          fontSize: 15,
+          color: Color(0xFF1F2937), // Qora matn
+        ),
         decoration: InputDecoration(
           labelText: 'Mahalla',
           hintText: 'Mahallani tanlang',
