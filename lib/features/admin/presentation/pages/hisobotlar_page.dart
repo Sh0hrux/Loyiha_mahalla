@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import '../../../../app/theme.dart';
+import '../../../auth/presentation/providers/auth_provider.dart';
 import '../../../ariza/presentation/providers/ariza_provider.dart';
 import '../../../muammo/presentation/providers/muammo_provider.dart';
 import '../../../navbat/presentation/providers/navbat_provider.dart';
