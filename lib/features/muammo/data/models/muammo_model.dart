@@ -11,6 +11,7 @@ class MuammoModel {
   final List<String> imageUrls;
   final String status; // yuborildi, ko'rilmoqda, hal_qilindi, rad_etildi
   final String? adminResponse;
+  final String? mahallaId; // Mahalla ID
   final DateTime createdAt;
   final DateTime? updatedAt;
 
@@ -25,6 +26,7 @@ class MuammoModel {
     required this.imageUrls,
     required this.status,
     this.adminResponse,
+    this.mahallaId,
     required this.createdAt,
     this.updatedAt,
   });
@@ -59,6 +61,7 @@ class MuammoModel {
       imageUrls: List<String>.from(data['imageUrls'] ?? []),
       status: data['status'] ?? 'yuborildi',
       adminResponse: data['adminResponse'],
+      mahallaId: data['mahallaId'],
       createdAt: (data['createdAt'] as Timestamp).toDate(),
       updatedAt: data['updatedAt'] != null
           ? (data['updatedAt'] as Timestamp).toDate()
@@ -78,6 +81,7 @@ class MuammoModel {
       'imageUrls': imageUrls,
       'status': status,
       'adminResponse': adminResponse,
+      'mahallaId': mahallaId,
       'createdAt': Timestamp.fromDate(createdAt),
       'updatedAt': updatedAt != null ? Timestamp.fromDate(updatedAt!) : null,
     };
@@ -95,6 +99,7 @@ class MuammoModel {
     List<String>? imageUrls,
     String? status,
     String? adminResponse,
+    String? mahallaId,
     DateTime? createdAt,
     DateTime? updatedAt,
   }) {
@@ -109,6 +114,7 @@ class MuammoModel {
       imageUrls: imageUrls ?? this.imageUrls,
       status: status ?? this.status,
       adminResponse: adminResponse ?? this.adminResponse,
+      mahallaId: mahallaId ?? this.mahallaId,
       createdAt: createdAt ?? this.createdAt,
       updatedAt: updatedAt ?? this.updatedAt,
     );

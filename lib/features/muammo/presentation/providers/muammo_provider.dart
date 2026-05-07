@@ -14,10 +14,10 @@ final userMuammolarProvider =
   return repository.getUserMuammolar(userId);
 });
 
-// All Muammolar Stream Provider (Admin)
-final allMuammolarProvider = StreamProvider<List<MuammoModel>>((ref) {
+// All Muammolar Stream Provider (Admin) - with mahalla filter
+final allMuammolarProvider = StreamProvider.family<List<MuammoModel>, String?>((ref, mahallaId) {
   final repository = ref.watch(muammoRepositoryProvider);
-  return repository.getAllMuammolar();
+  return repository.getAllMuammolar(mahallaId: mahallaId);
 });
 
 // Single Muammo Provider

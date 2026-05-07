@@ -14,9 +14,11 @@ class AdminDashboardPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final currentUser = ref.watch(currentUserProvider).value;
-    final arizalarAsync = ref.watch(allArizalarProvider);
-    final muammolarAsync = ref.watch(allMuammolarProvider);
-    final navbatlarAsync = ref.watch(allNavbatlarProvider);
+    final mahallaId = currentUser?.mahallaId;
+    
+    final arizalarAsync = ref.watch(allArizalarProvider(mahallaId));
+    final muammolarAsync = ref.watch(allMuammolarProvider(mahallaId));
+    final navbatlarAsync = ref.watch(allNavbatlarProvider(mahallaId));
     final elonlarAsync = ref.watch(allElonlarProvider);
 
     final arizalarCount = arizalarAsync.when(

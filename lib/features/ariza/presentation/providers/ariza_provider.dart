@@ -13,10 +13,10 @@ final userArizalarProvider = StreamProvider.family<List<ArizaModel>, String>((re
   return repository.getUserArizalar(userId);
 });
 
-// All Arizalar Stream Provider (Admin)
-final allArizalarProvider = StreamProvider<List<ArizaModel>>((ref) {
+// All Arizalar Stream Provider (Admin) - with mahalla filter
+final allArizalarProvider = StreamProvider.family<List<ArizaModel>, String?>((ref, mahallaId) {
   final repository = ref.watch(arizaRepositoryProvider);
-  return repository.getAllArizalar();
+  return repository.getAllArizalar(mahallaId: mahallaId);
 });
 
 // Create Ariza State Provider

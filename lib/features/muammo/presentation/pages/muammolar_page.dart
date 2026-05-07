@@ -23,8 +23,9 @@ class MuammolarPage extends ConsumerWidget {
     }
 
     final isAdmin = currentUser.role == 'admin';
+    final mahallaId = isAdmin ? currentUser.mahallaId : null;
     final muammolarAsync = isAdmin
-        ? ref.watch(allMuammolarProvider)
+        ? ref.watch(allMuammolarProvider(mahallaId))
         : ref.watch(userMuammolarProvider(currentUser.id));
 
     return Scaffold(
@@ -114,7 +115,7 @@ class MuammolarPage extends ConsumerWidget {
                   message: error.toString(),
                   onRetry: () {
                     ref.invalidate(isAdmin
-                        ? allMuammolarProvider
+                        ? allMuammolarProvider(mahallaId)
                         : userMuammolarProvider(currentUser.id));
                   },
                 ),

@@ -11,6 +11,7 @@ class ArizaModel {
   final List<String> imageUrls;
   final String? adminResponse;
   final String? adminId;
+  final String? mahallaId; // Mahalla ID
   final DateTime createdAt;
   final DateTime? updatedAt;
   final DateTime? completedAt;
@@ -26,6 +27,7 @@ class ArizaModel {
     this.imageUrls = const [],
     this.adminResponse,
     this.adminId,
+    this.mahallaId,
     required this.createdAt,
     this.updatedAt,
     this.completedAt,
@@ -45,6 +47,7 @@ class ArizaModel {
       imageUrls: List<String>.from(data['imageUrls'] ?? []),
       adminResponse: data['adminResponse'],
       adminId: data['adminId'],
+      mahallaId: data['mahallaId'],
       createdAt: (data['createdAt'] as Timestamp).toDate(),
       updatedAt: data['updatedAt'] != null
           ? (data['updatedAt'] as Timestamp).toDate()
@@ -67,6 +70,7 @@ class ArizaModel {
       'imageUrls': imageUrls,
       'adminResponse': adminResponse,
       'adminId': adminId,
+      'mahallaId': mahallaId,
       'createdAt': Timestamp.fromDate(createdAt),
       'updatedAt': updatedAt != null ? Timestamp.fromDate(updatedAt!) : null,
       'completedAt':
@@ -86,6 +90,7 @@ class ArizaModel {
     List<String>? imageUrls,
     String? adminResponse,
     String? adminId,
+    String? mahallaId,
     DateTime? createdAt,
     DateTime? updatedAt,
     DateTime? completedAt,
@@ -101,6 +106,7 @@ class ArizaModel {
       imageUrls: imageUrls ?? this.imageUrls,
       adminResponse: adminResponse ?? this.adminResponse,
       adminId: adminId ?? this.adminId,
+      mahallaId: mahallaId ?? this.mahallaId,
       createdAt: createdAt ?? this.createdAt,
       updatedAt: updatedAt ?? this.updatedAt,
       completedAt: completedAt ?? this.completedAt,

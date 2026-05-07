@@ -33,10 +33,15 @@ class MuammoRepository {
     });
   }
 
-  // Get all muammolar (Admin)
-  Stream<List<MuammoModel>> getAllMuammolar() {
-    return _firestore
-        .collection(_collection)
+  // Get all muammolar (Admin) - filtered by mahalla
+  Stream<List<MuammoModel>> getAllMuammolar({String? mahallaId}) {
+    Query query = _firestore.collection(_collection);
+    
+    if (mahallaId != null) {
+      query = query.where('mahallaId', isEqualTo: mahallaId);
+    }
+    
+    return query
         .orderBy('createdAt', descending: true)
         .snapshots()
         .map((snapshot) => snapshot.docs

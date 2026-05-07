@@ -144,6 +144,7 @@ class _YangiNavbatPageState extends ConsumerState<YangiNavbatPage> {
         appointmentDate: _selectedDate!,
         timeSlot: _selectedTimeSlot!,
         status: 'kutilmoqda',
+        mahallaId: currentUser.mahallaId,
         createdAt: DateTime.now(),
       );
 

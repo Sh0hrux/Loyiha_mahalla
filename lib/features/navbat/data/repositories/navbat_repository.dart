@@ -33,10 +33,15 @@ class NavbatRepository {
     });
   }
 
-  // Get all navbatlar (Admin)
-  Stream<List<NavbatModel>> getAllNavbatlar() {
-    return _firestore
-        .collection(_collection)
+  // Get all navbatlar (Admin) - filtered by mahalla
+  Stream<List<NavbatModel>> getAllNavbatlar({String? mahallaId}) {
+    Query query = _firestore.collection(_collection);
+    
+    if (mahallaId != null) {
+      query = query.where('mahallaId', isEqualTo: mahallaId);
+    }
+    
+    return query
         .snapshots()
         .map((snapshot) {
       final navbatlar = snapshot.docs

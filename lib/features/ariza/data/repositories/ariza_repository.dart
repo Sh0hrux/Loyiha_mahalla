@@ -34,10 +34,15 @@ class ArizaRepository {
     });
   }
 
-  // Get All Arizalar (Admin)
-  Stream<List<ArizaModel>> getAllArizalar() {
-    return _firestore
-        .collection(AppConstants.arizalarCollection)
+  // Get All Arizalar (Admin) - filtered by mahalla
+  Stream<List<ArizaModel>> getAllArizalar({String? mahallaId}) {
+    Query query = _firestore.collection(AppConstants.arizalarCollection);
+    
+    if (mahallaId != null) {
+      query = query.where('mahallaId', isEqualTo: mahallaId);
+    }
+    
+    return query
         .orderBy('createdAt', descending: true)
         .snapshots()
         .map((snapshot) =>

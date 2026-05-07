@@ -76,6 +76,7 @@ class _YangiArizaPageState extends ConsumerState<YangiArizaPage> {
         description: _descriptionController.text.trim(),
         status: AppConstants.arizaStatusYuborildi,
         imageUrls: imageUrls,
+        mahallaId: currentUser.mahallaId,
         createdAt: DateTime.now(),
       );
 

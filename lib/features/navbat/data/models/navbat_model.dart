@@ -11,6 +11,7 @@ class NavbatModel {
   final String status; // kutilmoqda, tasdiqlandi, bekor_qilindi, tugallandi
   final String? adminNote; // Admin izohi
   final String? adminId;
+  final String? mahallaId; // Mahalla ID
   final DateTime createdAt;
   final DateTime? updatedAt;
 
@@ -25,6 +26,7 @@ class NavbatModel {
     required this.status,
     this.adminNote,
     this.adminId,
+    this.mahallaId,
     required this.createdAt,
     this.updatedAt,
   });
@@ -59,6 +61,7 @@ class NavbatModel {
       status: data['status'] ?? 'kutilmoqda',
       adminNote: data['adminNote'],
       adminId: data['adminId'],
+      mahallaId: data['mahallaId'],
       createdAt: (data['createdAt'] as Timestamp).toDate(),
       updatedAt: data['updatedAt'] != null
           ? (data['updatedAt'] as Timestamp).toDate()
@@ -78,6 +81,7 @@ class NavbatModel {
       'status': status,
       'adminNote': adminNote,
       'adminId': adminId,
+      'mahallaId': mahallaId,
       'createdAt': Timestamp.fromDate(createdAt),
       'updatedAt': updatedAt != null ? Timestamp.fromDate(updatedAt!) : null,
     };
@@ -95,6 +99,7 @@ class NavbatModel {
     String? status,
     String? adminNote,
     String? adminId,
+    String? mahallaId,
     DateTime? createdAt,
     DateTime? updatedAt,
   }) {
@@ -109,6 +114,7 @@ class NavbatModel {
       status: status ?? this.status,
       adminNote: adminNote ?? this.adminNote,
       adminId: adminId ?? this.adminId,
+      mahallaId: mahallaId ?? this.mahallaId,
       createdAt: createdAt ?? this.createdAt,
       updatedAt: updatedAt ?? this.updatedAt,
     );

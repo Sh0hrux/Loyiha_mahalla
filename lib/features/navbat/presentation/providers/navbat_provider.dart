@@ -14,10 +14,10 @@ final userNavbatlarProvider =
   return repository.getUserNavbatlar(userId);
 });
 
-// All Navbatlar Stream Provider (Admin)
-final allNavbatlarProvider = StreamProvider<List<NavbatModel>>((ref) {
+// All Navbatlar Stream Provider (Admin) - with mahalla filter
+final allNavbatlarProvider = StreamProvider.family<List<NavbatModel>, String?>((ref, mahallaId) {
   final repository = ref.watch(navbatRepositoryProvider);
-  return repository.getAllNavbatlar();
+  return repository.getAllNavbatlar(mahallaId: mahallaId);
 });
 
 // Single Navbat Provider

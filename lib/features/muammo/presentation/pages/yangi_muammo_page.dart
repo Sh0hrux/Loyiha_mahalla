@@ -141,6 +141,7 @@ class _YangiMuammoPageState extends ConsumerState<YangiMuammoPage> {
         location: _locationController.text.trim(),
         imageUrls: imageUrls,
         status: 'yuborildi',
+        mahallaId: currentUser.mahallaId,
         createdAt: DateTime.now(),
       );
 

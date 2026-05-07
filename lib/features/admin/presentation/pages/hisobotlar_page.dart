@@ -28,9 +28,12 @@ class _HisobotlarPageState extends ConsumerState<HisobotlarPage> {
 
   @override
   Widget build(BuildContext context) {
-    final arizalarAsync = ref.watch(allArizalarProvider);
-    final muammolarAsync = ref.watch(allMuammolarProvider);
-    final navbatlarAsync = ref.watch(allNavbatlarProvider);
+    final currentUser = ref.watch(currentUserProvider).value;
+    final mahallaId = currentUser?.mahallaId;
+    
+    final arizalarAsync = ref.watch(allArizalarProvider(mahallaId));
+    final muammolarAsync = ref.watch(allMuammolarProvider(mahallaId));
+    final navbatlarAsync = ref.watch(allNavbatlarProvider(mahallaId));
     final elonlarAsync = ref.watch(allElonlarProvider);
 
     return Scaffold(
