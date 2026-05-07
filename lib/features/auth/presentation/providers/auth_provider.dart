@@ -20,10 +20,15 @@ class CurrentUserNotifier extends StateNotifier<AsyncValue<UserModel?>> {
   }
 
   Future<void> _loadCurrentUser() async {
+    print('🟢 _loadCurrentUser called');
     try {
+      print('🟢 Getting current user from repository...');
       final user = await _authRepository.getCurrentUser();
+      print('🟢 Current user: ${user?.id}, role: ${user?.role}, name: ${user?.fullName}');
       state = AsyncValue.data(user);
+      print('🟢 State updated with user data');
     } catch (e, stack) {
+      print('🔴 Error loading current user: $e');
       state = AsyncValue.error(e, stack);
     }
   }

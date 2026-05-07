@@ -225,12 +225,16 @@ class ElonDetailPage extends ConsumerWidget {
                                 size: 20,
                               ),
                               const SizedBox(width: 12),
-                              Text(
-                                'Amal qilish muddati: ${DateFormat('dd MMMM yyyy', 'uz').format(elon.expiresAt!)}',
-                                style: const TextStyle(
-                                  fontSize: 14,
-                                  color: Colors.orange,
-                                  fontWeight: FontWeight.w600,
+                              Expanded(
+                                child: Text(
+                                  'Amal qilish muddati: ${DateFormat('dd MMMM yyyy', 'uz').format(elon.expiresAt!)}',
+                                  style: const TextStyle(
+                                    fontSize: 14,
+                                    color: Colors.orange,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                  maxLines: 2,
+                                  overflow: TextOverflow.ellipsis,
                                 ),
                               ),
                             ],

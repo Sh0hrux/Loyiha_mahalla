@@ -7,6 +7,7 @@ import '../../../ariza/presentation/providers/ariza_provider.dart';
 import '../../../muammo/presentation/providers/muammo_provider.dart';
 import '../../../navbat/presentation/providers/navbat_provider.dart';
 import '../../../elon/presentation/providers/elon_provider.dart';
+import '../../data/services/pdf_service.dart';
 
 class HisobotlarPage extends ConsumerStatefulWidget {
   const HisobotlarPage({super.key});
@@ -245,6 +246,143 @@ class _HisobotlarPageState extends ConsumerState<HisobotlarPage> {
     if (selectedFilter != 'month' || selectedMonth == null) return true;
     return date.year == selectedMonth!.year &&
         date.month == selectedMonth!.month;
+  }
+
+  Future<void> _exportToPdf(
+    AsyncValue arizalarAsync,
+    AsyncValue muammolarAsync,
+    AsyncValue navbatlarAsync,
+    AsyncValue elonlarAsync,
+  ) async {
+    // Show loading
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) => const Center(
+        child: CircularProgressIndicator(),
+      ),
+    );
+
+    try {
+      await arizalarAsync.when(
+        data: (arizalar) async {
+          await muammolarAsync.when(
+            data: (muammolar) async {
+              await navbatlarAsync.when(
+                data: (navbatlar) async {
+                  await elonlarAsync.when(
+                    data: (elonlar) async {
+                      // Filter data
+                      final filteredArizalar = arizalar
+                          .where((item) => _isInSelectedMonth(item.createdAt))
+                          .toList();
+                      final filteredMuammolar = muammolar
+                          .where((item) => _isInSelectedMonth(item.createdAt))
+                          .toList();
+                      final filteredNavbatlar = navbatlar
+                          .where((item) => _isInSelectedMonth(item.createdAt))
+                          .toList();
+                      final filteredElonlar = elonlar
+                          .where((item) => _isInSelectedMonth(item.createdAt))
+                          .toList();
+
+                      // Prepare status data
+                      final Map<String, int> arizalarStatus = {
+                        'yuborildi': filteredArizalar
+                            .where((a) => a.status == 'yuborildi')
+                            .length,
+                        'ko\'rilmoqda': filteredArizalar
+                            .where((a) => a.status == 'ko\'rilmoqda')
+                            .length,
+                        'bajarildi': filteredArizalar
+                            .where((a) => a.status == 'bajarildi')
+                            .length,
+                        'rad_etildi': filteredArizalar
+                            .where((a) => a.status == 'rad_etildi')
+                            .length,
+                      };
+
+                      final Map<String, int> muammolarStatus = {
+                        'yuborildi': filteredMuammolar
+                            .where((m) => m.status == 'yuborildi')
+                            .length,
+                        'ko\'rilmoqda': filteredMuammolar
+                            .where((m) => m.status == 'ko\'rilmoqda')
+                            .length,
+                        'hal_qilindi': filteredMuammolar
+                            .where((m) => m.status == 'hal_qilindi')
+                            .length,
+                        'rad_etildi': filteredMuammolar
+                            .where((m) => m.status == 'rad_etildi')
+                            .length,
+                      };
+
+                      final Map<String, int> navbatlarStatus = {
+                        'kutilmoqda': filteredNavbatlar
+                            .where((n) => n.status == 'kutilmoqda')
+                            .length,
+                        'tasdiqlandi': filteredNavbatlar
+                            .where((n) => n.status == 'tasdiqlandi')
+                            .length,
+                        'tugallandi': filteredNavbatlar
+                            .where((n) => n.status == 'tugallandi')
+                            .length,
+                        'bekor_qilindi': filteredNavbatlar
+                            .where((n) => n.status == 'bekor_qilindi')
+                            .length,
+                      };
+
+                      // Generate PDF
+                      await PdfService.generateHisobotPdf(
+                        title: 'Hisobotlar va Tahlil',
+                        selectedMonth: selectedFilter == 'month'
+                            ? selectedMonth
+                            : null,
+                        arizalarCount: filteredArizalar.length,
+                        muammolarCount: filteredMuammolar.length,
+                        navbatlarCount: filteredNavbatlar.length,
+                        elonlarCount: filteredElonlar.length,
+                        arizalarStatus: arizalarStatus,
+                        muammolarStatus: muammolarStatus,
+                        navbatlarStatus: navbatlarStatus,
+                      );
+
+                      if (mounted) {
+                        Navigator.pop(context); // Close loading
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            content: Text('PDF muvaffaqiyatli yaratildi'),
+                            backgroundColor: Colors.green,
+                          ),
+                        );
+                      }
+                    },
+                    loading: () {},
+                    error: (_, __) {},
+                  );
+                },
+                loading: () {},
+                error: (_, __) {},
+              );
+            },
+            loading: () {},
+            error: (_, __) {},
+          );
+        },
+        loading: () {},
+        error: (_, __) {},
+      );
+    } catch (e) {
+      if (mounted) {
+        Navigator.pop(context); // Close loading
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Xatolik: $e'),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
+    }
   }
 
   Widget _buildStatistics(
@@ -613,6 +751,90 @@ class _HisobotlarPageState extends ConsumerState<HisobotlarPage> {
           },
           loading: () => const Center(child: CircularProgressIndicator()),
           error: (_, __) => const Center(child: Text('Xatolik yuz berdi')),
+        ),
+
+        const SizedBox(height: 32),
+
+        // PDF Export Button - Katta va chiroyli
+        Container(
+          height: 64,
+          decoration: BoxDecoration(
+            gradient: const LinearGradient(
+              colors: [Color(0xFFEF4444), Color(0xFFDC2626)],
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+            ),
+            borderRadius: BorderRadius.circular(20),
+            boxShadow: [
+              BoxShadow(
+                color: const Color(0xFFEF4444).withOpacity(0.4),
+                blurRadius: 16,
+                offset: const Offset(0, 8),
+              ),
+            ],
+          ),
+          child: ElevatedButton(
+            onPressed: () => _exportToPdf(
+              arizalarAsync,
+              muammolarAsync,
+              navbatlarAsync,
+              elonlarAsync,
+            ),
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Colors.transparent,
+              shadowColor: Colors.transparent,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(20),
+              ),
+              padding: const EdgeInsets.symmetric(horizontal: 24),
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Container(
+                  padding: const EdgeInsets.all(12),
+                  decoration: BoxDecoration(
+                    color: Colors.white.withOpacity(0.2),
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: const Icon(
+                    Icons.picture_as_pdf,
+                    color: Colors.white,
+                    size: 32,
+                  ),
+                ),
+                const SizedBox(width: 16),
+                const Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'PDF yuklash',
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                      ),
+                    ),
+                    SizedBox(height: 2),
+                    Text(
+                      'Hisobotni saqlash',
+                      style: TextStyle(
+                        fontSize: 13,
+                        color: Colors.white70,
+                      ),
+                    ),
+                  ],
+                ),
+                const Spacer(),
+                const Icon(
+                  Icons.arrow_forward_ios,
+                  color: Colors.white,
+                  size: 20,
+                ),
+              ],
+            ),
+          ),
         ),
 
         const SizedBox(height: 24),
