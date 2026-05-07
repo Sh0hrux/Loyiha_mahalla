@@ -7,6 +7,7 @@ import 'firebase_options.dart';
 import 'app/router.dart';
 import 'app/theme.dart';
 import 'services/notification_service.dart';
+import 'core/services/mahalla_setup_service.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -18,6 +19,14 @@ void main() async {
   
   // Notification service initialization
   await NotificationService.initialize();
+  
+  // Setup mahallas (only runs once)
+  try {
+    final mahallaSetup = MahallaSetupService();
+    await mahallaSetup.setupMahallas();
+  } catch (e) {
+    print('⚠️ Mahalla setup error (non-critical): $e');
+  }
   
   runApp(
     const ProviderScope(

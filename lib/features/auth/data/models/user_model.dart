@@ -9,9 +9,7 @@ class UserModel {
   final String? passportSeries;
   final String? passportNumber;
   final String? photoUrl;
-  final String? region; // Viloyat
-  final String? district; // Tuman
-  final String? mahalla; // Mahalla
+  final String? mahallaId; // Mahalla ID (reference to mahallalar collection)
   final DateTime createdAt;
   final DateTime? updatedAt;
 
@@ -24,9 +22,7 @@ class UserModel {
     this.passportSeries,
     this.passportNumber,
     this.photoUrl,
-    this.region,
-    this.district,
-    this.mahalla,
+    this.mahallaId,
     required this.createdAt,
     this.updatedAt,
   });
@@ -43,9 +39,7 @@ class UserModel {
       passportSeries: data['passportSeries'],
       passportNumber: data['passportNumber'],
       photoUrl: data['photoUrl'],
-      region: data['region'],
-      district: data['district'],
-      mahalla: data['mahalla'],
+      mahallaId: data['mahallaId'],
       createdAt: (data['createdAt'] as Timestamp).toDate(),
       updatedAt: data['updatedAt'] != null 
           ? (data['updatedAt'] as Timestamp).toDate() 
@@ -63,9 +57,7 @@ class UserModel {
       'passportSeries': passportSeries,
       'passportNumber': passportNumber,
       'photoUrl': photoUrl,
-      'region': region,
-      'district': district,
-      'mahalla': mahalla,
+      'mahallaId': mahallaId,
       'createdAt': Timestamp.fromDate(createdAt),
       'updatedAt': updatedAt != null ? Timestamp.fromDate(updatedAt!) : null,
     };
@@ -81,9 +73,7 @@ class UserModel {
     String? passportSeries,
     String? passportNumber,
     String? photoUrl,
-    String? region,
-    String? district,
-    String? mahalla,
+    String? mahallaId,
     DateTime? createdAt,
     DateTime? updatedAt,
   }) {
@@ -96,9 +86,7 @@ class UserModel {
       passportSeries: passportSeries ?? this.passportSeries,
       passportNumber: passportNumber ?? this.passportNumber,
       photoUrl: photoUrl ?? this.photoUrl,
-      region: region ?? this.region,
-      district: district ?? this.district,
-      mahalla: mahalla ?? this.mahalla,
+      mahallaId: mahallaId ?? this.mahallaId,
       createdAt: createdAt ?? this.createdAt,
       updatedAt: updatedAt ?? this.updatedAt,
     );
