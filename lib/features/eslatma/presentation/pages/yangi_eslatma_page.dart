@@ -16,7 +16,7 @@ final usersRepositoryProvider = Provider<UsersRepository>((ref) {
 // All users stream provider
 final allUsersProvider = StreamProvider.autoDispose<List<UserModel>>((ref) {
   final repository = ref.watch(usersRepositoryProvider);
-  return repository.getAllUsersStream();
+  return repository.getAllUsers();
 });
 
 class YangiEslatmaPage extends ConsumerStatefulWidget {
@@ -249,7 +249,7 @@ class _YangiEslatmaPageState extends ConsumerState<YangiEslatmaPage> {
                   final filteredUsers = users.where((user) {
                     if (_searchQuery.isEmpty) return true;
                     return user.fullName.toLowerCase().contains(_searchQuery) ||
-                        user.email.toLowerCase().contains(_searchQuery);
+                        user.phoneNumber.toLowerCase().contains(_searchQuery);
                   }).toList();
 
                   if (filteredUsers.isEmpty) {
@@ -276,7 +276,7 @@ class _YangiEslatmaPageState extends ConsumerState<YangiEslatmaPage> {
 
                         return CheckboxListTile(
                           title: Text(user.fullName),
-                          subtitle: Text(user.email),
+                          subtitle: Text(user.phoneNumber.isNotEmpty ? user.phoneNumber : 'Telefon yo\'q'),
                           secondary: CircleAvatar(
                             child: Text(
                               user.fullName[0].toUpperCase(),
