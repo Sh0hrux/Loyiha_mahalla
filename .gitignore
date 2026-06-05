@@ -10,6 +10,11 @@
 .svn/
 migrate_working_dir/
 
+# Firebase Admin SDK (NEVER COMMIT!)
+firebase-admin-key.json
+*-firebase-adminsdk-*.json
+google-services-parsed.json
+
 # IntelliJ related
 *.iml
 *.ipr
