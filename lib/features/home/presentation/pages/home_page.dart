@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../../auth/presentation/providers/auth_provider.dart';
+import '../../../eslatma/presentation/providers/eslatma_provider.dart';
 import '../../../../app/theme.dart';
 
 class HomePage extends ConsumerWidget {
@@ -296,6 +297,16 @@ class HomePage extends ConsumerWidget {
                                 },
                               ),
                               _ModernMenuCard(
+                                icon: Icons.notifications_active_outlined,
+                                title: 'Eslatmalar',
+                                subtitle: 'Bildirishnomalar',
+                                gradientColors: const [Color(0xFFEC4899), Color(0xFFDB2777)],
+                                badgeCount: ref.watch(unreadEslatmalarCountProvider).value,
+                                onTap: () {
+                                  context.push('/eslatmalar');
+                                },
+                              ),
+                              _ModernMenuCard(
                                 icon: Icons.info_outline,
                                 title: 'Mahalla haqida',
                                 subtitle: 'Ma\'lumot',
@@ -381,6 +392,15 @@ class HomePage extends ConsumerWidget {
                                 gradientColors: const [Color(0xFF10B981), Color(0xFF059669)],
                                 onTap: () {
                                   context.push('/admin/hisobotlar');
+                                },
+                              ),
+                              _ModernMenuCard(
+                                icon: Icons.send_outlined,
+                                title: 'Eslatma yuborish',
+                                subtitle: 'Foydalanuvchilarga',
+                                gradientColors: const [Color(0xFFEC4899), Color(0xFFDB2777)],
+                                onTap: () {
+                                  context.push('/yangi-eslatma');
                                 },
                               ),
                             ],
@@ -528,6 +548,7 @@ class _ModernMenuCard extends StatefulWidget {
   final String subtitle;
   final List<Color> gradientColors;
   final VoidCallback onTap;
+  final int? badgeCount;
 
   const _ModernMenuCard({
     required this.icon,
@@ -535,6 +556,7 @@ class _ModernMenuCard extends StatefulWidget {
     required this.subtitle,
     required this.gradientColors,
     required this.onTap,
+    this.badgeCount,
   });
 
   @override
@@ -600,17 +622,50 @@ class _ModernMenuCardState extends State<_ModernMenuCard>
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Container(
-                    padding: const EdgeInsets.all(14),
-                    decoration: BoxDecoration(
-                      color: Colors.white.withOpacity(0.2),
-                      borderRadius: BorderRadius.circular(16),
-                    ),
-                    child: Icon(
-                      widget.icon,
-                      size: 32,
-                      color: Colors.white,
-                    ),
+                  Stack(
+                    clipBehavior: Clip.none,
+                    children: [
+                      Container(
+                        padding: const EdgeInsets.all(14),
+                        decoration: BoxDecoration(
+                          color: Colors.white.withOpacity(0.2),
+                          borderRadius: BorderRadius.circular(16),
+                        ),
+                        child: Icon(
+                          widget.icon,
+                          size: 32,
+                          color: Colors.white,
+                        ),
+                      ),
+                      // Badge
+                      if (widget.badgeCount != null && widget.badgeCount! > 0)
+                        Positioned(
+                          right: -6,
+                          top: -6,
+                          child: Container(
+                            padding: const EdgeInsets.all(6),
+                            decoration: BoxDecoration(
+                              color: Colors.red,
+                              shape: BoxShape.circle,
+                              border: Border.all(color: Colors.white, width: 2),
+                            ),
+                            constraints: const BoxConstraints(
+                              minWidth: 20,
+                              minHeight: 20,
+                            ),
+                            child: Center(
+                              child: Text(
+                                widget.badgeCount! > 99 ? '99+' : '${widget.badgeCount}',
+                                style: const TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 10,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                    ],
                   ),
                   const SizedBox(height: 12),
                   Text(

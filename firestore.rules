@@ -1,0 +1,154 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    // Helper functions
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+    
+    function isOwner(userId) {
+      return isAuthenticated() && request.auth.uid == userId;
+    }
+    
+    function isAdmin() {
+      return isAuthenticated() && 
+             get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'admin';
+    }
+    
+    function isXodim() {
+      return isAuthenticated() && 
+             get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'xodim';
+    }
+    
+    function isAdminOrXodim() {
+      return isAdmin() || isXodim();
+    }
+    
+    // Users collection
+    match /users/{userId} {
+      // Read: Own profile or admin/xodim
+      allow read: if isOwner(userId) || isAdminOrXodim();
+      
+      // Create: Only authenticated users can create their own profile
+      allow create: if isAuthenticated() && request.auth.uid == userId;
+      
+      // Update: Own profile or admin
+      allow update: if isOwner(userId) || isAdmin();
+      
+      // Delete: Only admin
+      allow delete: if isAdmin();
+    }
+    
+    // Mahallalar collection (Reference data)
+    match /mahallalar/{mahallaId} {
+      // Read: Everyone (public data)
+      allow read: if true;
+      
+      // Write: Only admin
+      allow write: if isAdmin();
+    }
+    
+    // Arizalar collection
+    match /arizalar/{arizaId} {
+      // Read: Owner, admin, or xodim
+      allow read: if isAuthenticated() && 
+                     (resource.data.userId == request.auth.uid || 
+                      isAdminOrXodim());
+      
+      // Create: Authenticated users
+      allow create: if isAuthenticated() && 
+                       request.resource.data.userId == request.auth.uid;
+      
+      // Update: Owner (limited fields) or admin/xodim (all fields)
+      allow update: if isAuthenticated() && 
+                       (resource.data.userId == request.auth.uid || 
+                        isAdminOrXodim());
+      
+      // Delete: Admin only
+      allow delete: if isAdmin();
+    }
+    
+    // Muammolar collection
+    match /muammolar/{muammoId} {
+      // Read: Owner, admin, or xodim
+      allow read: if isAuthenticated() && 
+                     (resource.data.userId == request.auth.uid || 
+                      isAdminOrXodim());
+      
+      // Create: Authenticated users
+      allow create: if isAuthenticated() && 
+                       request.resource.data.userId == request.auth.uid;
+      
+      // Update: Owner (limited fields) or admin/xodim (all fields)
+      allow update: if isAuthenticated() && 
+                       (resource.data.userId == request.auth.uid || 
+                        isAdminOrXodim());
+      
+      // Delete: Admin only
+      allow delete: if isAdmin();
+    }
+    
+    // Navbatlar collection
+    match /navbatlar/{navbatId} {
+      // Read: Everyone authenticated (to see queue status)
+      allow read: if isAuthenticated();
+      
+      // Create: Authenticated users
+      allow create: if isAuthenticated() && 
+                       request.resource.data.userId == request.auth.uid;
+      
+      // Update: Owner or admin/xodim
+      allow update: if isAuthenticated() && 
+                       (resource.data.userId == request.auth.uid || 
+                        isAdminOrXodim());
+      
+      // Delete: Admin or xodim
+      allow delete: if isAdminOrXodim();
+    }
+    
+    // Elonlar collection (Announcements)
+    match /elonlar/{elonId} {
+      // Read: Everyone authenticated
+      allow read: if isAuthenticated();
+      
+      // Write: Only admin or xodim
+      allow write: if isAdminOrXodim();
+    }
+    
+    // Xodimlar collection (Staff)
+    match /xodimlar/{xodimId} {
+      // Read: Everyone authenticated (to see staff list)
+      allow read: if isAuthenticated();
+      
+      // Write: Only admin
+      allow write: if isAdmin();
+    }
+    
+    // Eslatmalar collection (Notifications/Reminders)
+    match /eslatmalar/{eslatmaId} {
+      // Read: Owner (who received it) or admin/xodim
+      allow read: if isAuthenticated() && 
+                     (resource.data.userId == request.auth.uid || 
+                      isAdminOrXodim());
+      
+      // Create: Only admin or xodim can send notifications
+      allow create: if isAdminOrXodim() && 
+                       request.resource.data.adminId == request.auth.uid;
+      
+      // Update: Owner can mark as read, admin can update anything
+      allow update: if isAuthenticated() && 
+                       (resource.data.userId == request.auth.uid || 
+                        isAdmin());
+      
+      // Delete: Only admin
+      allow delete: if isAdmin();
+    }
+    
+    // Deny all other collections by default
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}
