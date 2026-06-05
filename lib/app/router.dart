@@ -29,6 +29,9 @@ import '../features/profile/presentation/pages/profile_page.dart';
 import '../features/admin/presentation/pages/admin_dashboard_page.dart';
 import '../features/users/presentation/pages/foydalanuvchilar_page.dart';
 import '../features/admin/presentation/pages/hisobotlar_page.dart';
+import '../features/eslatma/presentation/pages/eslatmalar_page.dart';
+import '../features/eslatma/presentation/pages/eslatma_detail_page.dart';
+import '../features/eslatma/presentation/pages/yangi_eslatma_page.dart';
 
 // Router Provider
 final routerProvider = Provider<GoRouter>((ref) {
@@ -236,6 +239,23 @@ final routerProvider = Provider<GoRouter>((ref) {
       GoRoute(
         path: '/profile',
         builder: (context, state) => const ProfilePage(),
+      ),
+
+      // Eslatma Routes
+      GoRoute(
+        path: '/eslatmalar',
+        builder: (context, state) => const EslatmalarPage(),
+      ),
+      GoRoute(
+        path: '/eslatma-detail/:id',
+        builder: (context, state) {
+          final eslatmaId = state.pathParameters['id']!;
+          return EslatmaDetailPage(eslatmaId: eslatmaId);
+        },
+      ),
+      GoRoute(
+        path: '/yangi-eslatma',
+        builder: (context, state) => const YangiEslatmaPage(),
       ),
 
       // Admin Routes

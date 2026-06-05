@@ -126,6 +126,26 @@ service cloud.firestore {
       allow write: if isAdmin();
     }
     
+    // Eslatmalar collection (Notifications/Reminders)
+    match /eslatmalar/{eslatmaId} {
+      // Read: Owner (who received it) or admin/xodim
+      allow read: if isAuthenticated() && 
+                     (resource.data.userId == request.auth.uid || 
+                      isAdminOrXodim());
+      
+      // Create: Only admin or xodim can send notifications
+      allow create: if isAdminOrXodim() && 
+                       request.resource.data.adminId == request.auth.uid;
+      
+      // Update: Owner can mark as read, admin can update anything
+      allow update: if isAuthenticated() && 
+                       (resource.data.userId == request.auth.uid || 
+                        isAdmin());
+      
+      // Delete: Only admin
+      allow delete: if isAdmin();
+    }
+    
     // Deny all other collections by default
     match /{document=**} {
       allow read, write: if false;
