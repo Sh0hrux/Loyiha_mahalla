@@ -59,7 +59,7 @@ class PdfService {
             ),
             pw.SizedBox(height: 10),
 
-            pw.Table.fromTextArray(
+            pw.TableHelper.fromTextArray(
               headers: ['Ko\'rsatkich', 'Soni'],
               data: [
                 ['Jami arizalar', totalArizalar.toString()],
@@ -84,7 +84,7 @@ class PdfService {
             ),
             pw.SizedBox(height: 10),
 
-            pw.Table.fromTextArray(
+            pw.TableHelper.fromTextArray(
               headers: ['Kategoriya', 'Soni'],
               data: arizaByCategory.entries
                   .map((e) => [e.key, e.value.toString()])
@@ -107,7 +107,7 @@ class PdfService {
             ),
             pw.SizedBox(height: 10),
 
-            pw.Table.fromTextArray(
+            pw.TableHelper.fromTextArray(
               headers: ['Ko\'rsatkich', 'Soni'],
               data: [
                 ['Jami muammolar', totalMuammolar.toString()],
@@ -131,7 +131,7 @@ class PdfService {
             ),
             pw.SizedBox(height: 10),
 
-            pw.Table.fromTextArray(
+            pw.TableHelper.fromTextArray(
               headers: ['Turi', 'Soni'],
               data: muammoByType.entries
                   .map((e) => [e.key, e.value.toString()])

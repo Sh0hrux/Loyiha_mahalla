@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../data/models/user_model.dart';
 import '../../data/repositories/auth_repository.dart';
@@ -8,27 +9,30 @@ final authRepositoryProvider = Provider<AuthRepository>((ref) {
 });
 
 // Current User Provider
-final currentUserProvider = StateNotifierProvider<CurrentUserNotifier, AsyncValue<UserModel?>>((ref) {
+final currentUserProvider =
+    StateNotifierProvider<CurrentUserNotifier, AsyncValue<UserModel?>>((ref) {
   return CurrentUserNotifier(ref.read(authRepositoryProvider));
 });
 
 class CurrentUserNotifier extends StateNotifier<AsyncValue<UserModel?>> {
   final AuthRepository _authRepository;
 
-  CurrentUserNotifier(this._authRepository) : super(const AsyncValue.loading()) {
+  CurrentUserNotifier(this._authRepository)
+      : super(const AsyncValue.loading()) {
     _loadCurrentUser();
   }
 
   Future<void> _loadCurrentUser() async {
-    print('🟢 _loadCurrentUser called');
+    debugPrint('🟢 _loadCurrentUser called');
     try {
-      print('🟢 Getting current user from repository...');
+      debugPrint('🟢 Getting current user from repository...');
       final user = await _authRepository.getCurrentUser();
-      print('🟢 Current user: ${user?.id}, role: ${user?.role}, name: ${user?.fullName}');
+      debugPrint(
+          '🟢 Current user: ${user?.id}, role: ${user?.role}, name: ${user?.fullName}');
       state = AsyncValue.data(user);
-      print('🟢 State updated with user data');
+      debugPrint('🟢 State updated with user data');
     } catch (e, stack) {
-      print('🔴 Error loading current user: $e');
+      debugPrint('🔴 Error loading current user: $e');
       state = AsyncValue.error(e, stack);
     }
   }
@@ -63,7 +67,8 @@ class CurrentUserNotifier extends StateNotifier<AsyncValue<UserModel?>> {
 }
 
 // Auth State Provider
-final authStateProvider = StateNotifierProvider<AuthStateNotifier, AuthState>((ref) {
+final authStateProvider =
+    StateNotifierProvider<AuthStateNotifier, AuthState>((ref) {
   return AuthStateNotifier(ref.read(authRepositoryProvider));
 });
 
@@ -109,37 +114,37 @@ class AuthStateNotifier extends StateNotifier<AuthState> {
     required String email,
     required String password,
   }) async {
-    print('🟢 signIn called: $email'); // DEBUG
+    debugPrint('🟢 signIn called: $email'); // DEBUG
     state = state.copyWith(status: AuthStatus.loading);
-    print('🟢 State set to loading'); // DEBUG
+    debugPrint('🟢 State set to loading'); // DEBUG
 
     try {
-      print('🟢 Calling Firebase signIn...'); // DEBUG
+      debugPrint('🟢 Calling Firebase signIn...'); // DEBUG
       final userCredential = await _authRepository.signInWithEmail(
         email: email,
         password: password,
       );
-      print('🟢 Firebase signIn success: ${userCredential.user?.uid}'); // DEBUG
+      debugPrint('🟢 Firebase signIn success: ${userCredential.user?.uid}'); // DEBUG
 
       final user = await _authRepository.getOrCreateUser(
         uid: userCredential.user!.uid,
         email: userCredential.user!.email!,
       );
-      print('🟢 User created/fetched: ${user.id}, role: ${user.role}'); // DEBUG
+      debugPrint('🟢 User created/fetched: ${user.id}, role: ${user.role}'); // DEBUG
 
       await _authRepository.saveLoginState(
         userId: user.id,
         userRole: user.role,
       );
-      print('🟢 Login state saved'); // DEBUG
+      debugPrint('🟢 Login state saved'); // DEBUG
 
       state = state.copyWith(
         status: AuthStatus.authenticated,
         user: user,
       );
-      print('🟢 State set to authenticated, redirecting...'); // DEBUG
+      debugPrint('🟢 State set to authenticated, redirecting...'); // DEBUG
     } catch (e) {
-      print('🔴 Error in signIn: $e'); // DEBUG
+      debugPrint('🔴 Error in signIn: $e'); // DEBUG
       state = state.copyWith(
         status: AuthStatus.error,
         errorMessage: e.toString(),

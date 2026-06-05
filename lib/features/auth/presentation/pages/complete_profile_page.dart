@@ -24,7 +24,6 @@ class _CompleteProfilePageState extends ConsumerState<CompleteProfilePage> {
   String? _selectedRegion;
   String? _selectedDistrict;
   String? _selectedMahallaId;
-  String? _selectedMahallaName;
 
   bool _isLoading = false;
   bool _isLoadingMahallas = false;
@@ -44,7 +43,6 @@ class _CompleteProfilePageState extends ConsumerState<CompleteProfilePage> {
       setState(() {
         _availableMahallas = [];
         _selectedMahallaId = null;
-        _selectedMahallaName = null;
       });
       return;
     }
@@ -54,11 +52,10 @@ class _CompleteProfilePageState extends ConsumerState<CompleteProfilePage> {
     try {
       final mahallaService = MahallaSetupService();
       final mahallas = await mahallaService.getMahallasByDistrict(district);
-      
+
       setState(() {
-        _availableMahallas = mahallas
-            .map((m) => {'id': m.id, 'name': m.name})
-            .toList();
+        _availableMahallas =
+            mahallas.map((m) => {'id': m.id, 'name': m.name}).toList();
         _isLoadingMahallas = false;
       });
     } catch (e) {
@@ -97,7 +94,8 @@ class _CompleteProfilePageState extends ConsumerState<CompleteProfilePage> {
         return;
       }
 
-      if (MahallaData.hasMahallas(_selectedDistrict!) && _selectedMahallaId == null) {
+      if (MahallaData.hasMahallas(_selectedDistrict!) &&
+          _selectedMahallaId == null) {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
             content: Text('Iltimos, mahallani tanlang'),
@@ -147,8 +145,8 @@ class _CompleteProfilePageState extends ConsumerState<CompleteProfilePage> {
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
             colors: [
-              AppTheme.primaryColor.withOpacity(0.05),
-              AppTheme.secondaryColor.withOpacity(0.05),
+              AppTheme.primaryColor.withValues(alpha: 0.05),
+              AppTheme.secondaryColor.withValues(alpha: 0.05),
             ],
           ),
         ),
@@ -188,7 +186,7 @@ class _CompleteProfilePageState extends ConsumerState<CompleteProfilePage> {
                           'Ma\'lumotlaringizni kiriting',
                           style: TextStyle(
                             fontSize: 14,
-                            color: Colors.white.withOpacity(0.9),
+                            color: Colors.white.withValues(alpha: 0.9),
                           ),
                         ),
                       ],
@@ -223,7 +221,6 @@ class _CompleteProfilePageState extends ConsumerState<CompleteProfilePage> {
                         _selectedRegion = value;
                         _selectedDistrict = null;
                         _selectedMahallaId = null;
-                        _selectedMahallaName = null;
                         _availableMahallas = [];
                       });
                     },
@@ -242,7 +239,6 @@ class _CompleteProfilePageState extends ConsumerState<CompleteProfilePage> {
                         setState(() {
                           _selectedDistrict = value;
                           _selectedMahallaId = null;
-                          _selectedMahallaName = null;
                         });
                         if (value != null) {
                           _loadMahallas(value);
@@ -325,7 +321,7 @@ class _CompleteProfilePageState extends ConsumerState<CompleteProfilePage> {
                       borderRadius: BorderRadius.circular(16),
                       boxShadow: [
                         BoxShadow(
-                          color: AppTheme.primaryColor.withOpacity(0.3),
+                          color: AppTheme.primaryColor.withValues(alpha: 0.3),
                           blurRadius: 12,
                           offset: const Offset(0, 6),
                         ),
@@ -385,7 +381,7 @@ class _CompleteProfilePageState extends ConsumerState<CompleteProfilePage> {
         borderRadius: BorderRadius.circular(16),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.05),
+            color: Colors.black.withValues(alpha: 0.05),
             blurRadius: 10,
             offset: const Offset(0, 4),
           ),
@@ -436,7 +432,7 @@ class _CompleteProfilePageState extends ConsumerState<CompleteProfilePage> {
           ),
           focusedBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(16),
-            borderSide: BorderSide(
+            borderSide: const BorderSide(
               color: AppTheme.primaryColor,
               width: 2,
             ),
@@ -478,14 +474,14 @@ class _CompleteProfilePageState extends ConsumerState<CompleteProfilePage> {
         borderRadius: BorderRadius.circular(16),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.05),
+            color: Colors.black.withValues(alpha: 0.05),
             blurRadius: 10,
             offset: const Offset(0, 4),
           ),
         ],
       ),
       child: DropdownButtonFormField<String>(
-        value: value,
+        initialValue: value,
         dropdownColor: Colors.white, // Dropdown menu oq rangda
         style: const TextStyle(
           fontSize: 15,
@@ -521,7 +517,7 @@ class _CompleteProfilePageState extends ConsumerState<CompleteProfilePage> {
           ),
           focusedBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(16),
-            borderSide: BorderSide(
+            borderSide: const BorderSide(
               color: AppTheme.primaryColor,
               width: 2,
             ),
@@ -555,14 +551,14 @@ class _CompleteProfilePageState extends ConsumerState<CompleteProfilePage> {
         borderRadius: BorderRadius.circular(16),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.05),
+            color: Colors.black.withValues(alpha: 0.05),
             blurRadius: 10,
             offset: const Offset(0, 4),
           ),
         ],
       ),
       child: DropdownButtonFormField<String>(
-        value: _selectedMahallaId,
+        initialValue: _selectedMahallaId,
         dropdownColor: Colors.white, // Dropdown menu oq rangda
         style: const TextStyle(
           fontSize: 15,
@@ -575,7 +571,7 @@ class _CompleteProfilePageState extends ConsumerState<CompleteProfilePage> {
             color: Color(0xFF6B7280),
             fontSize: 14,
           ),
-          prefixIcon: Icon(
+          prefixIcon: const Icon(
             Icons.home_work_outlined,
             color: AppTheme.primaryColor,
             size: 22,
@@ -598,7 +594,7 @@ class _CompleteProfilePageState extends ConsumerState<CompleteProfilePage> {
           ),
           focusedBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(16),
-            borderSide: BorderSide(
+            borderSide: const BorderSide(
               color: AppTheme.primaryColor,
               width: 2,
             ),
@@ -623,8 +619,6 @@ class _CompleteProfilePageState extends ConsumerState<CompleteProfilePage> {
         onChanged: (value) {
           setState(() {
             _selectedMahallaId = value;
-            _selectedMahallaName = _availableMahallas
-                .firstWhere((m) => m['id'] == value)['name'];
           });
         },
       ),

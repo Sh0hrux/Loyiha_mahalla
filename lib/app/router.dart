@@ -62,60 +62,60 @@ final routerProvider = Provider<GoRouter>((ref) {
       final isGoingToSplash = path == '/splash';
       final isGoingToAdmin = path.startsWith('/admin');
 
-      print('🔵 Router redirect:');
-      print('   path=$path');
-      print('   isLoading=$isLoading');
-      print('   isLoggedIn=$isLoggedIn');
-      print('   isAdmin=$isAdmin');
-      print('   isProfileComplete=$isProfileComplete');
-      print('   user=${user?.id}');
+      debugPrint('🔵 Router redirect:');
+      debugPrint('   path=$path');
+      debugPrint('   isLoading=$isLoading');
+      debugPrint('   isLoggedIn=$isLoggedIn');
+      debugPrint('   isAdmin=$isAdmin');
+      debugPrint('   isProfileComplete=$isProfileComplete');
+      debugPrint('   user=${user?.id}');
 
       // Show splash while loading
       if (isLoading) {
-        print('   ➡️ Loading, staying on splash');
+        debugPrint('   ➡️ Loading, staying on splash');
         if (!isGoingToSplash) return '/splash';
         return null;
       }
 
       // Not logged in - allow only auth pages
       if (!isLoggedIn) {
-        print('   ➡️ Not logged in');
+        debugPrint('   ➡️ Not logged in');
         if (isGoingToLogin || isGoingToSignUp || isGoingToForgotPassword) {
-          print('   ➡️ Allowing auth page');
+          debugPrint('   ➡️ Allowing auth page');
           return null;
         }
-        print('   ➡️ Redirecting to /login');
+        debugPrint('   ➡️ Redirecting to /login');
         return '/login';
       }
 
       // Logged in but profile incomplete
       if (!isProfileComplete) {
-        print('   ➡️ Profile incomplete');
+        debugPrint('   ➡️ Profile incomplete');
         if (isGoingToCompleteProfile) return null;
-        print('   ➡️ Redirecting to /complete-profile');
+        debugPrint('   ➡️ Redirecting to /complete-profile');
         return '/complete-profile';
       }
 
       // Profile complete - redirect from auth pages
       if (isGoingToLogin || isGoingToSignUp || isGoingToForgotPassword || isGoingToCompleteProfile || isGoingToSplash) {
         final destination = isAdmin ? '/admin/dashboard' : '/home';
-        print('   ➡️ Profile complete, redirecting to: $destination');
+        debugPrint('   ➡️ Profile complete, redirecting to: $destination');
         return destination;
       }
 
       // Admin access control
       if (isGoingToAdmin && !isAdmin) {
-        print('   ➡️ Non-admin trying to access admin, redirecting to /home');
+        debugPrint('   ➡️ Non-admin trying to access admin, redirecting to /home');
         return '/home';
       }
 
       // Redirect admin from home to dashboard
       if (isAdmin && path == '/home') {
-        print('   ➡️ Admin on home, redirecting to /admin/dashboard');
+        debugPrint('   ➡️ Admin on home, redirecting to /admin/dashboard');
         return '/admin/dashboard';
       }
 
-      print('   ➡️ No redirect needed');
+      debugPrint('   ➡️ No redirect needed');
       return null;
     },
     routes: [

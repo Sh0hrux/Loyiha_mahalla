@@ -53,7 +53,7 @@ class _YangiNavbatPageState extends ConsumerState<YangiNavbatPage> {
       builder: (context, child) {
         return Theme(
           data: Theme.of(context).copyWith(
-            colorScheme: ColorScheme.light(
+            colorScheme: const ColorScheme.light(
               primary: AppTheme.primaryColor,
               onPrimary: Colors.white,
               surface: Colors.white,
@@ -186,8 +186,8 @@ class _YangiNavbatPageState extends ConsumerState<YangiNavbatPage> {
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
             colors: [
-              AppTheme.successColor.withOpacity(0.05),
-              AppTheme.accentColor.withOpacity(0.05),
+              AppTheme.successColor.withValues(alpha: 0.05),
+              AppTheme.accentColor.withValues(alpha: 0.05),
             ],
           ),
         ),
@@ -232,19 +232,19 @@ class _YangiNavbatPageState extends ConsumerState<YangiNavbatPage> {
                       Container(
                         padding: const EdgeInsets.all(16),
                         decoration: BoxDecoration(
-                          color: AppTheme.accentColor.withOpacity(0.1),
+                          color: AppTheme.accentColor.withValues(alpha: 0.1),
                           borderRadius: BorderRadius.circular(16),
                           border: Border.all(
-                            color: AppTheme.accentColor.withOpacity(0.3),
+                            color: AppTheme.accentColor.withValues(alpha: 0.3),
                           ),
                         ),
-                        child: Row(
+                        child: const Row(
                           children: [
                             Icon(
                               Icons.info_outline,
                               color: AppTheme.accentColor,
                             ),
-                            const SizedBox(width: 12),
+                            SizedBox(width: 12),
                             Expanded(
                               child: Text(
                                 'Navbat 1 kundan 30 kungacha band qilish mumkin',
@@ -266,7 +266,7 @@ class _YangiNavbatPageState extends ConsumerState<YangiNavbatPage> {
                           borderRadius: BorderRadius.circular(16),
                           boxShadow: [
                             BoxShadow(
-                              color: Colors.black.withOpacity(0.05),
+                              color: Colors.black.withValues(alpha: 0.05),
                               blurRadius: 10,
                               offset: const Offset(0, 4),
                             ),
@@ -302,7 +302,7 @@ class _YangiNavbatPageState extends ConsumerState<YangiNavbatPage> {
                           borderRadius: BorderRadius.circular(16),
                           boxShadow: [
                             BoxShadow(
-                              color: Colors.black.withOpacity(0.05),
+                              color: Colors.black.withValues(alpha: 0.05),
                               blurRadius: 10,
                               offset: const Offset(0, 4),
                             ),
@@ -313,7 +313,7 @@ class _YangiNavbatPageState extends ConsumerState<YangiNavbatPage> {
                             horizontal: 20,
                             vertical: 8,
                           ),
-                          leading: Icon(
+                          leading: const Icon(
                             Icons.calendar_today_outlined,
                             color: AppTheme.primaryColor,
                           ),
@@ -394,7 +394,7 @@ class _YangiNavbatPageState extends ConsumerState<YangiNavbatPage> {
                                       ? [
                                           BoxShadow(
                                             color: const Color(0xFF10B981)
-                                                .withOpacity(0.3),
+                                                .withValues(alpha: 0.3),
                                             blurRadius: 8,
                                             offset: const Offset(0, 4),
                                           ),
@@ -430,7 +430,7 @@ class _YangiNavbatPageState extends ConsumerState<YangiNavbatPage> {
                           borderRadius: BorderRadius.circular(16),
                           boxShadow: [
                             BoxShadow(
-                              color: const Color(0xFF10B981).withOpacity(0.3),
+                              color: const Color(0xFF10B981).withValues(alpha: 0.3),
                               blurRadius: 12,
                               offset: const Offset(0, 6),
                             ),

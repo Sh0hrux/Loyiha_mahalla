@@ -223,7 +223,7 @@ class _MuammoDetailPageState extends ConsumerState<MuammoDetailPage> {
                 children: [
                   // Status Card
                   Card(
-                    color: statusColor.withOpacity(0.1),
+                    color: statusColor.withValues(alpha: 0.1),
                     child: Padding(
                       padding: const EdgeInsets.all(16),
                       child: Row(

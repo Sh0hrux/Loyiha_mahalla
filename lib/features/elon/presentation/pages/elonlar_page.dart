@@ -33,8 +33,8 @@ class ElonlarPage extends ConsumerWidget {
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
             colors: [
-              AppTheme.secondaryColor.withOpacity(0.05),
-              AppTheme.primaryColor.withOpacity(0.05),
+              AppTheme.secondaryColor.withValues(alpha: 0.05),
+              AppTheme.primaryColor.withValues(alpha: 0.05),
             ],
           ),
         ),
@@ -237,7 +237,7 @@ class _ModernElonCard extends StatelessWidget {
         borderRadius: BorderRadius.circular(20),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.05),
+            color: Colors.black.withValues(alpha: 0.05),
             blurRadius: 10,
             offset: const Offset(0, 4),
           ),
@@ -288,7 +288,7 @@ class _ModernElonCard extends StatelessWidget {
                             gradient: LinearGradient(
                               colors: [
                                 categoryColor,
-                                categoryColor.withOpacity(0.7),
+                                categoryColor.withValues(alpha: 0.7),
                               ],
                             ),
                             borderRadius: BorderRadius.circular(20),
@@ -369,8 +369,8 @@ class _ModernElonCard extends StatelessWidget {
                             ),
                             decoration: BoxDecoration(
                               color: elon.isActive
-                                  ? Colors.green.withOpacity(0.1)
-                                  : Colors.grey.withOpacity(0.1),
+                                  ? Colors.green.withValues(alpha: 0.1)
+                                  : Colors.grey.withValues(alpha: 0.1),
                               borderRadius: BorderRadius.circular(12),
                             ),
                             child: Text(

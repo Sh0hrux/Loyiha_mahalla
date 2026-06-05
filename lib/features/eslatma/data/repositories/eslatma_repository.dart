@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import '../../../../services/firebase_service.dart';
 import '../models/eslatma_model.dart';
@@ -34,14 +35,13 @@ class EslatmaRepository {
         metadata: metadata,
       );
 
-      final docRef = await _firestore
-          .collection(_collection)
-          .add(eslatma.toFirestore());
+      final docRef =
+          await _firestore.collection(_collection).add(eslatma.toFirestore());
 
-      print('✅ Eslatma yaratildi: ${docRef.id}');
+      debugPrint('✅ Eslatma yaratildi: ${docRef.id}');
       return docRef.id;
     } catch (e) {
-      print('❌ Eslatma yaratishda xatolik: $e');
+      debugPrint('❌ Eslatma yaratishda xatolik: $e');
       rethrow;
     }
   }
@@ -82,25 +82,27 @@ class EslatmaRepository {
       }
 
       await batch.commit();
-      print('✅ ${userIds.length} ta eslatma yuborildi');
+      debugPrint('✅ ${userIds.length} ta eslatma yuborildi');
       return docIds;
     } catch (e) {
-      print('❌ Bulk eslatma yaratishda xatolik: $e');
+      debugPrint('❌ Bulk eslatma yaratishda xatolik: $e');
       rethrow;
     }
   }
 
   /// Foydalanuvchining eslatmalari (real-time stream)
+  /// Eslatma: composite index talab qilmaslik uchun saralash xotirada (Dart) qilinadi.
   Stream<List<EslatmaModel>> getUserEslatmalar(String userId) {
     return _firestore
         .collection(_collection)
         .where('userId', isEqualTo: userId)
-        .orderBy('createdAt', descending: true)
         .snapshots()
         .map((snapshot) {
-      return snapshot.docs
-          .map((doc) => EslatmaModel.fromFirestore(doc))
-          .toList();
+      final list =
+          snapshot.docs.map((doc) => EslatmaModel.fromFirestore(doc)).toList();
+      // Yangi eslatmalar yuqorida (createdAt bo'yicha kamayish tartibida)
+      list.sort((a, b) => b.createdAt.compareTo(a.createdAt));
+      return list;
     });
   }
 
@@ -134,9 +136,9 @@ class EslatmaRepository {
       await _firestore.collection(_collection).doc(eslatmaId).update({
         'isRead': true,
       });
-      print('✅ Eslatma o\'qildi: $eslatmaId');
+      debugPrint('✅ Eslatma o\'qildi: $eslatmaId');
     } catch (e) {
-      print('❌ Eslatmani o\'qilgan deb belgilashda xatolik: $e');
+      debugPrint('❌ Eslatmani o\'qilgan deb belgilashda xatolik: $e');
       rethrow;
     }
   }
@@ -156,9 +158,9 @@ class EslatmaRepository {
       }
 
       await batch.commit();
-      print('✅ Barcha eslatmalar o\'qildi');
+      debugPrint('✅ Barcha eslatmalar o\'qildi');
     } catch (e) {
-      print('❌ Barcha eslatmalarni o\'qilgan deb belgilashda xatolik: $e');
+      debugPrint('❌ Barcha eslatmalarni o\'qilgan deb belgilashda xatolik: $e');
       rethrow;
     }
   }
@@ -167,9 +169,9 @@ class EslatmaRepository {
   Future<void> deleteEslatma(String eslatmaId) async {
     try {
       await _firestore.collection(_collection).doc(eslatmaId).delete();
-      print('✅ Eslatma o\'chirildi: $eslatmaId');
+      debugPrint('✅ Eslatma o\'chirildi: $eslatmaId');
     } catch (e) {
-      print('❌ Eslatmani o\'chirishda xatolik: $e');
+      debugPrint('❌ Eslatmani o\'chirishda xatolik: $e');
       rethrow;
     }
   }
@@ -181,7 +183,7 @@ class EslatmaRepository {
       if (!doc.exists) return null;
       return EslatmaModel.fromFirestore(doc);
     } catch (e) {
-      print('❌ Eslatmani olishda xatolik: $e');
+      debugPrint('❌ Eslatmani olishda xatolik: $e');
       return null;
     }
   }
@@ -201,9 +203,9 @@ class EslatmaRepository {
       }
 
       await batch.commit();
-      print('✅ ${snapshot.docs.length} ta eskirgan eslatma o\'chirildi');
+      debugPrint('✅ ${snapshot.docs.length} ta eskirgan eslatma o\'chirildi');
     } catch (e) {
-      print('❌ Eskirgan eslatmalarni o\'chirishda xatolik: $e');
+      debugPrint('❌ Eskirgan eslatmalarni o\'chirishda xatolik: $e');
       rethrow;
     }
   }
@@ -212,7 +214,7 @@ class EslatmaRepository {
   Future<Map<String, int>> getEslatmaStats() async {
     try {
       final snapshot = await _firestore.collection(_collection).get();
-      
+
       int total = snapshot.docs.length;
       int unread = 0;
       int urgent = 0;
@@ -222,7 +224,7 @@ class EslatmaRepository {
         final data = doc.data();
         if (data['isRead'] == false) unread++;
         if (data['isUrgent'] == true) urgent++;
-        
+
         final type = data['type'] as String;
         typeCount[type] = (typeCount[type] ?? 0) + 1;
       }
@@ -234,7 +236,7 @@ class EslatmaRepository {
         ...typeCount,
       };
     } catch (e) {
-      print('❌ Statistika olishda xatolik: $e');
+      debugPrint('❌ Statistika olishda xatolik: $e');
       return {};
     }
   }

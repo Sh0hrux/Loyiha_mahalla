@@ -183,8 +183,8 @@ class _YangiMuammoPageState extends ConsumerState<YangiMuammoPage> {
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
             colors: [
-              AppTheme.warningColor.withOpacity(0.05),
-              AppTheme.errorColor.withOpacity(0.05),
+              AppTheme.warningColor.withValues(alpha: 0.05),
+              AppTheme.errorColor.withValues(alpha: 0.05),
             ],
           ),
         ),
@@ -232,14 +232,14 @@ class _YangiMuammoPageState extends ConsumerState<YangiMuammoPage> {
                           borderRadius: BorderRadius.circular(16),
                           boxShadow: [
                             BoxShadow(
-                              color: Colors.black.withOpacity(0.05),
+                              color: Colors.black.withValues(alpha: 0.05),
                               blurRadius: 10,
                               offset: const Offset(0, 4),
                             ),
                           ],
                         ),
                         child: DropdownButtonFormField<String>(
-                          value: _selectedCategory,
+                          initialValue: _selectedCategory,
                           decoration: const InputDecoration(
                             labelText: 'Muammo turi',
                             prefixIcon: Icon(Icons.category_outlined),
@@ -273,7 +273,7 @@ class _YangiMuammoPageState extends ConsumerState<YangiMuammoPage> {
                           borderRadius: BorderRadius.circular(16),
                           boxShadow: [
                             BoxShadow(
-                              color: Colors.black.withOpacity(0.05),
+                              color: Colors.black.withValues(alpha: 0.05),
                               blurRadius: 10,
                               offset: const Offset(0, 4),
                             ),
@@ -308,7 +308,7 @@ class _YangiMuammoPageState extends ConsumerState<YangiMuammoPage> {
                           borderRadius: BorderRadius.circular(16),
                           boxShadow: [
                             BoxShadow(
-                              color: Colors.black.withOpacity(0.05),
+                              color: Colors.black.withValues(alpha: 0.05),
                               blurRadius: 10,
                               offset: const Offset(0, 4),
                             ),
@@ -357,7 +357,7 @@ class _YangiMuammoPageState extends ConsumerState<YangiMuammoPage> {
                               style: OutlinedButton.styleFrom(
                                 padding: const EdgeInsets.symmetric(vertical: 14),
                                 side: BorderSide(
-                                  color: AppTheme.primaryColor.withOpacity(0.5),
+                                  color: AppTheme.primaryColor.withValues(alpha: 0.5),
                                 ),
                               ),
                             ),
@@ -371,7 +371,7 @@ class _YangiMuammoPageState extends ConsumerState<YangiMuammoPage> {
                               style: OutlinedButton.styleFrom(
                                 padding: const EdgeInsets.symmetric(vertical: 14),
                                 side: BorderSide(
-                                  color: AppTheme.primaryColor.withOpacity(0.5),
+                                  color: AppTheme.primaryColor.withValues(alpha: 0.5),
                                 ),
                               ),
                             ),
@@ -438,7 +438,7 @@ class _YangiMuammoPageState extends ConsumerState<YangiMuammoPage> {
                           borderRadius: BorderRadius.circular(16),
                           boxShadow: [
                             BoxShadow(
-                              color: const Color(0xFFF59E0B).withOpacity(0.3),
+                              color: const Color(0xFFF59E0B).withValues(alpha: 0.3),
                               blurRadius: 12,
                               offset: const Offset(0, 6),
                             ),

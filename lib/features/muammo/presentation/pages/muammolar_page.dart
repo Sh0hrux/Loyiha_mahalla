@@ -35,8 +35,8 @@ class MuammolarPage extends ConsumerWidget {
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
             colors: [
-              AppTheme.warningColor.withOpacity(0.05),
-              AppTheme.errorColor.withOpacity(0.05),
+              AppTheme.warningColor.withValues(alpha: 0.05),
+              AppTheme.errorColor.withValues(alpha: 0.05),
             ],
           ),
         ),
@@ -205,7 +205,7 @@ class _ModernMuammoCard extends StatelessWidget {
         borderRadius: BorderRadius.circular(20),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.05),
+            color: Colors.black.withValues(alpha: 0.05),
             blurRadius: 10,
             offset: const Offset(0, 4),
           ),
@@ -231,7 +231,7 @@ class _ModernMuammoCard extends StatelessWidget {
                         gradient: LinearGradient(
                           colors: [
                             statusColor,
-                            statusColor.withOpacity(0.7),
+                            statusColor.withValues(alpha: 0.7),
                           ],
                         ),
                         borderRadius: BorderRadius.circular(12),
@@ -290,10 +290,10 @@ class _ModernMuammoCard extends StatelessWidget {
                         vertical: 6,
                       ),
                       decoration: BoxDecoration(
-                        color: statusColor.withOpacity(0.1),
+                        color: statusColor.withValues(alpha: 0.1),
                         borderRadius: BorderRadius.circular(20),
                         border: Border.all(
-                          color: statusColor.withOpacity(0.3),
+                          color: statusColor.withValues(alpha: 0.3),
                           width: 1.5,
                         ),
                       ),
@@ -331,7 +331,7 @@ class _ModernMuammoCard extends StatelessWidget {
                 Container(
                   padding: const EdgeInsets.all(10),
                   decoration: BoxDecoration(
-                    color: const Color(0xFFF59E0B).withOpacity(0.1),
+                    color: const Color(0xFFF59E0B).withValues(alpha: 0.1),
                     borderRadius: BorderRadius.circular(12),
                   ),
                   child: Row(
@@ -362,14 +362,14 @@ class _ModernMuammoCard extends StatelessWidget {
                   Container(
                     padding: const EdgeInsets.all(12),
                     decoration: BoxDecoration(
-                      color: AppTheme.primaryColor.withOpacity(0.05),
+                      color: AppTheme.primaryColor.withValues(alpha: 0.05),
                       borderRadius: BorderRadius.circular(12),
                     ),
                     child: Column(
                       children: [
                         Row(
                           children: [
-                            Icon(
+                            const Icon(
                               Icons.person_outline,
                               size: 18,
                               color: AppTheme.primaryColor,
@@ -392,7 +392,7 @@ class _ModernMuammoCard extends StatelessWidget {
                         const SizedBox(height: 8),
                         Row(
                           children: [
-                            Icon(
+                            const Icon(
                               Icons.phone_outlined,
                               size: 18,
                               color: AppTheme.primaryColor,
@@ -428,13 +428,13 @@ class _ModernMuammoCard extends StatelessWidget {
                           vertical: 6,
                         ),
                         decoration: BoxDecoration(
-                          color: AppTheme.accentColor.withOpacity(0.1),
+                          color: AppTheme.accentColor.withValues(alpha: 0.1),
                           borderRadius: BorderRadius.circular(20),
                         ),
                         child: Row(
                           mainAxisSize: MainAxisSize.min,
                           children: [
-                            Icon(
+                            const Icon(
                               Icons.image_outlined,
                               size: 16,
                               color: AppTheme.accentColor,
@@ -442,7 +442,7 @@ class _ModernMuammoCard extends StatelessWidget {
                             const SizedBox(width: 6),
                             Text(
                               '${muammo.imageUrls.length} ta rasm',
-                              style: TextStyle(
+                              style: const TextStyle(
                                 fontSize: 12,
                                 color: AppTheme.accentColor,
                                 fontWeight: FontWeight.w600,

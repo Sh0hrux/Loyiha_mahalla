@@ -124,8 +124,8 @@ class _YangiXodimPageState extends ConsumerState<YangiXodimPage> {
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
             colors: [
-              AppTheme.primaryColor.withOpacity(0.05),
-              AppTheme.secondaryColor.withOpacity(0.05),
+              AppTheme.primaryColor.withValues(alpha: 0.05),
+              AppTheme.secondaryColor.withValues(alpha: 0.05),
             ],
           ),
         ),
@@ -262,7 +262,7 @@ class _YangiXodimPageState extends ConsumerState<YangiXodimPage> {
                           borderRadius: BorderRadius.circular(16),
                           boxShadow: [
                             BoxShadow(
-                              color: Colors.black.withOpacity(0.05),
+                              color: Colors.black.withValues(alpha: 0.05),
                               blurRadius: 10,
                               offset: const Offset(0, 4),
                             ),
@@ -270,7 +270,7 @@ class _YangiXodimPageState extends ConsumerState<YangiXodimPage> {
                         ),
                         child: Row(
                           children: [
-                            Icon(
+                            const Icon(
                               Icons.visibility_outlined,
                               color: AppTheme.primaryColor,
                               size: 24,
@@ -291,7 +291,7 @@ class _YangiXodimPageState extends ConsumerState<YangiXodimPage> {
                               onChanged: (value) {
                                 setState(() => _isActive = value);
                               },
-                              activeColor: AppTheme.successColor,
+                              activeThumbColor: AppTheme.successColor,
                             ),
                           ],
                         ),
@@ -306,7 +306,7 @@ class _YangiXodimPageState extends ConsumerState<YangiXodimPage> {
                           borderRadius: BorderRadius.circular(16),
                           boxShadow: [
                             BoxShadow(
-                              color: AppTheme.primaryColor.withOpacity(0.3),
+                              color: AppTheme.primaryColor.withValues(alpha: 0.3),
                               blurRadius: 12,
                               offset: const Offset(0, 6),
                             ),
@@ -368,7 +368,7 @@ class _YangiXodimPageState extends ConsumerState<YangiXodimPage> {
         borderRadius: BorderRadius.circular(16),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.05),
+            color: Colors.black.withValues(alpha: 0.05),
             blurRadius: 10,
             offset: const Offset(0, 4),
           ),
@@ -412,7 +412,7 @@ class _YangiXodimPageState extends ConsumerState<YangiXodimPage> {
           ),
           focusedBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(16),
-            borderSide: BorderSide(
+            borderSide: const BorderSide(
               color: AppTheme.primaryColor,
               width: 2,
             ),

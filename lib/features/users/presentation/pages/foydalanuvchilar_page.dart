@@ -13,12 +13,12 @@ class FoydalanuvchilarPage extends ConsumerStatefulWidget {
   const FoydalanuvchilarPage({super.key});
 
   @override
-  ConsumerState<FoydalanuvchilarPage> createState() => _FoydalanuvchilarPageState();
+  ConsumerState<FoydalanuvchilarPage> createState() =>
+      _FoydalanuvchilarPageState();
 }
 
 class _FoydalanuvchilarPageState extends ConsumerState<FoydalanuvchilarPage> {
   String _selectedFilter = 'all'; // all, admin, fuqaro
-  String _searchQuery = '';
 
   @override
   Widget build(BuildContext context) {
@@ -37,8 +37,8 @@ class _FoydalanuvchilarPageState extends ConsumerState<FoydalanuvchilarPage> {
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
             colors: [
-              AppTheme.primaryColor.withOpacity(0.05),
-              AppTheme.accentColor.withOpacity(0.05),
+              AppTheme.primaryColor.withValues(alpha: 0.05),
+              AppTheme.accentColor.withValues(alpha: 0.05),
             ],
           ),
         ),
@@ -133,7 +133,8 @@ class _FoydalanuvchilarPageState extends ConsumerState<FoydalanuvchilarPage> {
                                 ),
                                 loading: () => const SizedBox(
                                   height: 100,
-                                  child: Center(child: CircularProgressIndicator()),
+                                  child: Center(
+                                      child: CircularProgressIndicator()),
                                 ),
                                 error: (_, __) => const SizedBox.shrink(),
                               ),
@@ -158,13 +159,15 @@ class _FoydalanuvchilarPageState extends ConsumerState<FoydalanuvchilarPage> {
                         _FilterChip(
                           label: 'Adminlar',
                           isSelected: _selectedFilter == 'admin',
-                          onTap: () => setState(() => _selectedFilter = 'admin'),
+                          onTap: () =>
+                              setState(() => _selectedFilter = 'admin'),
                         ),
                         const SizedBox(width: 8),
                         _FilterChip(
                           label: 'Fuqarolar',
                           isSelected: _selectedFilter == 'fuqaro',
-                          onTap: () => setState(() => _selectedFilter = 'fuqaro'),
+                          onTap: () =>
+                              setState(() => _selectedFilter = 'fuqaro'),
                         ),
                       ],
                     ),
@@ -177,7 +180,7 @@ class _FoydalanuvchilarPageState extends ConsumerState<FoydalanuvchilarPage> {
             usersAsync.when(
               data: (users) {
                 if (users.isEmpty) {
-                  return SliverFillRemaining(
+                  return const SliverFillRemaining(
                     child: EmptyStateWidget(
                       icon: Icons.people_outline,
                       title: 'Foydalanuvchilar yo\'q',
@@ -254,7 +257,7 @@ class _StatCard extends StatelessWidget {
         borderRadius: BorderRadius.circular(16),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.05),
+            color: Colors.black.withValues(alpha: 0.05),
             blurRadius: 10,
             offset: const Offset(0, 4),
           ),
@@ -265,7 +268,7 @@ class _StatCard extends StatelessWidget {
           Container(
             padding: const EdgeInsets.all(12),
             decoration: BoxDecoration(
-              color: color.withOpacity(0.1),
+              color: color.withValues(alpha: 0.1),
               borderRadius: BorderRadius.circular(12),
             ),
             child: Icon(icon, color: color, size: 28),
@@ -343,7 +346,8 @@ class _UserCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isAdmin = user.role == 'admin';
-    final roleColor = isAdmin ? const Color(0xFFEF4444) : const Color(0xFF10B981);
+    final roleColor =
+        isAdmin ? const Color(0xFFEF4444) : const Color(0xFF10B981);
 
     return Container(
       margin: const EdgeInsets.only(bottom: 12),
@@ -352,7 +356,7 @@ class _UserCard extends StatelessWidget {
         borderRadius: BorderRadius.circular(16),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.05),
+            color: Colors.black.withValues(alpha: 0.05),
             blurRadius: 10,
             offset: const Offset(0, 4),
           ),
@@ -373,13 +377,15 @@ class _UserCard extends StatelessWidget {
                   height: 56,
                   decoration: BoxDecoration(
                     gradient: LinearGradient(
-                      colors: [roleColor, roleColor.withOpacity(0.7)],
+                      colors: [roleColor, roleColor.withValues(alpha: 0.7)],
                     ),
                     borderRadius: BorderRadius.circular(12),
                   ),
                   child: Center(
                     child: Text(
-                      user.fullName.isNotEmpty ? user.fullName[0].toUpperCase() : '?',
+                      user.fullName.isNotEmpty
+                          ? user.fullName[0].toUpperCase()
+                          : '?',
                       style: const TextStyle(
                         color: Colors.white,
                         fontSize: 24,
@@ -415,7 +421,7 @@ class _UserCard extends StatelessWidget {
                               vertical: 4,
                             ),
                             decoration: BoxDecoration(
-                              color: roleColor.withOpacity(0.1),
+                              color: roleColor.withValues(alpha: 0.1),
                               borderRadius: BorderRadius.circular(12),
                             ),
                             child: Text(
@@ -450,7 +456,8 @@ class _UserCard extends StatelessWidget {
                       const SizedBox(height: 4),
                       Row(
                         children: [
-                          Icon(Icons.calendar_today, size: 14, color: Colors.grey[600]),
+                          Icon(Icons.calendar_today,
+                              size: 14, color: Colors.grey[600]),
                           const SizedBox(width: 4),
                           Text(
                             DateFormat('dd.MM.yyyy').format(user.createdAt),
@@ -506,7 +513,9 @@ class _UserDetailsDialog extends ConsumerWidget {
                 ),
                 child: Center(
                   child: Text(
-                    user.fullName.isNotEmpty ? user.fullName[0].toUpperCase() : '?',
+                    user.fullName.isNotEmpty
+                        ? user.fullName[0].toUpperCase()
+                        : '?',
                     style: const TextStyle(
                       color: Colors.white,
                       fontSize: 36,
@@ -526,24 +535,28 @@ class _UserDetailsDialog extends ConsumerWidget {
               ),
               const SizedBox(height: 8),
               Container(
-                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
                 decoration: BoxDecoration(
                   color: isAdmin
-                      ? const Color(0xFFEF4444).withOpacity(0.1)
-                      : const Color(0xFF10B981).withOpacity(0.1),
+                      ? const Color(0xFFEF4444).withValues(alpha: 0.1)
+                      : const Color(0xFF10B981).withValues(alpha: 0.1),
                   borderRadius: BorderRadius.circular(20),
                 ),
                 child: Text(
                   isAdmin ? 'Admin' : 'Fuqaro',
                   style: TextStyle(
-                    color: isAdmin ? const Color(0xFFEF4444) : const Color(0xFF10B981),
+                    color: isAdmin
+                        ? const Color(0xFFEF4444)
+                        : const Color(0xFF10B981),
                     fontWeight: FontWeight.bold,
                   ),
                 ),
               ),
               const SizedBox(height: 24),
               // User Info
-              _InfoRow(icon: Icons.phone, label: 'Telefon', value: user.phoneNumber),
+              _InfoRow(
+                  icon: Icons.phone, label: 'Telefon', value: user.phoneNumber),
               const SizedBox(height: 12),
               _InfoRow(
                 icon: Icons.calendar_today,
@@ -552,7 +565,10 @@ class _UserDetailsDialog extends ConsumerWidget {
               ),
               if (user.address != null) ...[
                 const SizedBox(height: 12),
-                _InfoRow(icon: Icons.location_on, label: 'Manzil', value: user.address!),
+                _InfoRow(
+                    icon: Icons.location_on,
+                    label: 'Manzil',
+                    value: user.address!),
               ],
               const SizedBox(height: 24),
               // Statistics
@@ -629,7 +645,8 @@ class _UserDetailsDialog extends ConsumerWidget {
     );
   }
 
-  void _showChangeRoleDialog(BuildContext context, WidgetRef ref, UserModel user) {
+  void _showChangeRoleDialog(
+      BuildContext context, WidgetRef ref, UserModel user) {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
@@ -645,8 +662,10 @@ class _UserDetailsDialog extends ConsumerWidget {
           ElevatedButton(
             onPressed: () async {
               final newRole = user.role == 'admin' ? 'fuqaro' : 'admin';
-              await ref.read(updateUserRoleProvider.notifier).updateRole(user.id, newRole);
-              
+              await ref
+                  .read(updateUserRoleProvider.notifier)
+                  .updateRole(user.id, newRole);
+
               if (context.mounted) {
                 Navigator.pop(context);
                 ScaffoldMessenger.of(context).showSnackBar(
@@ -725,7 +744,7 @@ class _StatItem extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
-        color: color.withOpacity(0.1),
+        color: color.withValues(alpha: 0.1),
         borderRadius: BorderRadius.circular(12),
       ),
       child: Column(

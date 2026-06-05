@@ -1,30 +1,24 @@
-// This is a basic Flutter widget test.
+// Basic widget test for the Mahalla app.
 //
-// To perform an interaction with a widget in your test, use the WidgetTester
-// utility in the flutter_test package. For example, you can send tap and scroll
-// gestures. You can also use WidgetTester to find child widgets in the widget
-// tree, read text, and verify that the values of widget properties are correct.
+// Eslatma: To'liq `MahallaApp` ni pump qilish Firebase initializatsiyasini
+// talab qiladi (test muhitida mavjud emas). Shu sababli bu yerda Firebase'ga
+// bog'liq bo'lmagan oddiy "smoke test" saqlanadi. Widget/integratsiya
+// testlari kerak bo'lsa, Firebase mock'lari bilan alohida yoziladi.
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-import 'package:mahalla_app/main.dart';
-
 void main() {
-  testWidgets('Counter increments smoke test', (WidgetTester tester) async {
-    // Build our app and trigger a frame.
-    await tester.pumpWidget(const MyApp());
+  testWidgets('Smoke test: MaterialApp renders a widget',
+      (WidgetTester tester) async {
+    await tester.pumpWidget(
+      const MaterialApp(
+        home: Scaffold(
+          body: Center(child: Text('Mahalla Xizmati')),
+        ),
+      ),
+    );
 
-    // Verify that our counter starts at 0.
-    expect(find.text('0'), findsOneWidget);
-    expect(find.text('1'), findsNothing);
-
-    // Tap the '+' icon and trigger a frame.
-    await tester.tap(find.byIcon(Icons.add));
-    await tester.pump();
-
-    // Verify that our counter has incremented.
-    expect(find.text('0'), findsNothing);
-    expect(find.text('1'), findsOneWidget);
+    expect(find.text('Mahalla Xizmati'), findsOneWidget);
   });
 }

@@ -36,7 +36,7 @@ class _YangiEslatmaPageState extends ConsumerState<YangiEslatmaPage> {
   DateTime? _expiresAt;
   bool _isUrgent = false;
   bool _sendToAll = false;
-  List<String> _selectedUserIds = [];
+  final List<String> _selectedUserIds = [];
   String _searchQuery = '';
 
   @override
@@ -47,13 +47,33 @@ class _YangiEslatmaPageState extends ConsumerState<YangiEslatmaPage> {
     super.dispose();
   }
 
+  /// Eslatma turi rangi
+  Color _typeColor(EslatmaType type) {
+    switch (type) {
+      case EslatmaType.soliq:
+        return const Color(0xFF10B981); // Green
+      case EslatmaType.kommunal:
+        return const Color(0xFF3B82F6); // Blue
+      case EslatmaType.tadbir:
+        return const Color(0xFFF59E0B); // Amber
+      case EslatmaType.yigilish:
+        return const Color(0xFF8B5CF6); // Violet
+      case EslatmaType.xizmat:
+        return const Color(0xFFEC4899); // Pink
+      case EslatmaType.muhim:
+        return const Color(0xFFEF4444); // Red
+      case EslatmaType.umumiy:
+        return const Color(0xFF6366F1); // Indigo
+    }
+  }
+
   Future<void> _submitEslatma() async {
     if (!_formKey.currentState!.validate()) return;
 
     if (!_sendToAll && _selectedUserIds.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: const Text('Kamida bitta foydalanuvchi tanlang'),
+        const SnackBar(
+          content: Text('Kamida bitta foydalanuvchi tanlang'),
           backgroundColor: AppTheme.errorColor,
         ),
       );
@@ -90,9 +110,9 @@ class _YangiEslatmaPageState extends ConsumerState<YangiEslatmaPage> {
 
     try {
       final notifier = ref.read(eslatmaNotifierProvider.notifier);
-      
+
       List<String> targetUserIds = _selectedUserIds;
-      
+
       // If send to all, get all user IDs
       if (_sendToAll) {
         final allUsersAsync = ref.read(allUsersProvider);
@@ -193,7 +213,7 @@ class _YangiEslatmaPageState extends ConsumerState<YangiEslatmaPage> {
                   if (value) _selectedUserIds.clear();
                 });
               },
-              activeColor: AppTheme.primaryColor,
+              activeThumbColor: AppTheme.primaryColor,
             ),
             const Divider(),
 
@@ -276,7 +296,9 @@ class _YangiEslatmaPageState extends ConsumerState<YangiEslatmaPage> {
 
                         return CheckboxListTile(
                           title: Text(user.fullName),
-                          subtitle: Text(user.phoneNumber.isNotEmpty ? user.phoneNumber : 'Telefon yo\'q'),
+                          subtitle: Text(user.phoneNumber.isNotEmpty
+                              ? user.phoneNumber
+                              : 'Telefon yo\'q'),
                           secondary: CircleAvatar(
                             child: Text(
                               user.fullName[0].toUpperCase(),
@@ -313,38 +335,106 @@ class _YangiEslatmaPageState extends ConsumerState<YangiEslatmaPage> {
             ],
 
             // Type selector
-            const Text(
-              'Eslatma turi',
-              style: TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            const SizedBox(height: 8),
-            Wrap(
-              spacing: 8,
-              runSpacing: 8,
-              children: EslatmaType.values.map((type) {
-                final isSelected = _selectedType == type;
-                return ChoiceChip(
-                  label: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Text(type.emoji),
-                      const SizedBox(width: 6),
-                      Text(type.label),
-                    ],
+            Row(
+              children: [
+                const Icon(Icons.category_outlined,
+                    size: 20, color: AppTheme.primaryColor),
+                const SizedBox(width: 8),
+                const Text(
+                  'Eslatma turi',
+                  style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
                   ),
-                  selected: isSelected,
-                  onSelected: (selected) {
-                    if (selected) {
-                      setState(() => _selectedType = type);
-                    }
-                  },
-                  selectedColor: AppTheme.primaryColor.withOpacity(0.2),
-                  labelStyle: TextStyle(
-                    color: isSelected ? AppTheme.primaryColor : Colors.black87,
-                    fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+                ),
+                const Spacer(),
+                Container(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                  decoration: BoxDecoration(
+                    color: _typeColor(_selectedType).withValues(alpha: 0.12),
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  child: Text(
+                    '${_selectedType.emoji} ${_selectedType.label}',
+                    style: TextStyle(
+                      fontSize: 12,
+                      fontWeight: FontWeight.w600,
+                      color: _typeColor(_selectedType),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 12),
+            GridView.count(
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
+              crossAxisCount: 2,
+              crossAxisSpacing: 10,
+              mainAxisSpacing: 10,
+              childAspectRatio: 2.7,
+              children: EslatmaType.values.map((type) {
+                final color = _typeColor(type);
+                final isSelected = _selectedType == type;
+                return GestureDetector(
+                  onTap: () => setState(() => _selectedType = type),
+                  child: AnimatedContainer(
+                    duration: const Duration(milliseconds: 200),
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+                    decoration: BoxDecoration(
+                      color: isSelected
+                          ? color.withValues(alpha: 0.12)
+                          : Colors.grey.shade50,
+                      borderRadius: BorderRadius.circular(14),
+                      border: Border.all(
+                        color: isSelected ? color : Colors.grey.shade300,
+                        width: isSelected ? 2 : 1,
+                      ),
+                      boxShadow: isSelected
+                          ? [
+                              BoxShadow(
+                                color: color.withValues(alpha: 0.25),
+                                blurRadius: 8,
+                                offset: const Offset(0, 3),
+                              ),
+                            ]
+                          : null,
+                    ),
+                    child: Row(
+                      children: [
+                        Container(
+                          padding: const EdgeInsets.all(7),
+                          decoration: BoxDecoration(
+                            color: color.withValues(alpha: 0.18),
+                            shape: BoxShape.circle,
+                          ),
+                          child: Text(
+                            type.emoji,
+                            style: const TextStyle(fontSize: 16),
+                          ),
+                        ),
+                        const SizedBox(width: 8),
+                        Expanded(
+                          child: Text(
+                            type.label,
+                            maxLines: 2,
+                            overflow: TextOverflow.ellipsis,
+                            style: TextStyle(
+                              fontSize: 12.5,
+                              height: 1.1,
+                              color: isSelected ? color : Colors.black87,
+                              fontWeight: isSelected
+                                  ? FontWeight.bold
+                                  : FontWeight.w500,
+                            ),
+                          ),
+                        ),
+                        if (isSelected)
+                          Icon(Icons.check_circle, color: color, size: 18),
+                      ],
+                    ),
                   ),
                 );
               }).toList(),
@@ -438,7 +528,7 @@ class _YangiEslatmaPageState extends ConsumerState<YangiEslatmaPage> {
               onChanged: (value) {
                 setState(() => _isUrgent = value);
               },
-              activeColor: AppTheme.errorColor,
+              activeThumbColor: AppTheme.errorColor,
             ),
             const SizedBox(height: 24),
 

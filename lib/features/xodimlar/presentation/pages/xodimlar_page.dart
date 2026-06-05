@@ -42,8 +42,8 @@ class XodimlarPage extends ConsumerWidget {
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
             colors: [
-              AppTheme.primaryColor.withOpacity(0.05),
-              AppTheme.secondaryColor.withOpacity(0.05),
+              AppTheme.primaryColor.withValues(alpha: 0.05),
+              AppTheme.secondaryColor.withValues(alpha: 0.05),
             ],
           ),
         ),
@@ -243,7 +243,7 @@ class _XodimCard extends StatelessWidget {
         borderRadius: BorderRadius.circular(20),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.05),
+            color: Colors.black.withValues(alpha: 0.05),
             blurRadius: 10,
             offset: const Offset(0, 4),
           ),
@@ -305,12 +305,12 @@ class _XodimCard extends StatelessWidget {
                           vertical: 4,
                         ),
                         decoration: BoxDecoration(
-                          color: AppTheme.primaryColor.withOpacity(0.1),
+                          color: AppTheme.primaryColor.withValues(alpha: 0.1),
                           borderRadius: BorderRadius.circular(12),
                         ),
                         child: Text(
                           xodim.position,
-                          style: TextStyle(
+                          style: const TextStyle(
                             fontSize: 12,
                             color: AppTheme.primaryColor,
                             fontWeight: FontWeight.w600,
@@ -366,7 +366,7 @@ class _XodimCard extends StatelessWidget {
                             vertical: 4,
                           ),
                           decoration: BoxDecoration(
-                            color: Colors.red.withOpacity(0.1),
+                            color: Colors.red.withValues(alpha: 0.1),
                             borderRadius: BorderRadius.circular(8),
                           ),
                           child: const Text(
@@ -391,7 +391,7 @@ class _XodimCard extends StatelessWidget {
                       icon: const Icon(Icons.phone),
                       color: AppTheme.successColor,
                       style: IconButton.styleFrom(
-                        backgroundColor: AppTheme.successColor.withOpacity(0.1),
+                        backgroundColor: AppTheme.successColor.withValues(alpha: 0.1),
                       ),
                     ),
                     if (onSendEmail != null)
@@ -401,7 +401,7 @@ class _XodimCard extends StatelessWidget {
                         color: AppTheme.accentColor,
                         style: IconButton.styleFrom(
                           backgroundColor:
-                              AppTheme.accentColor.withOpacity(0.1),
+                              AppTheme.accentColor.withValues(alpha: 0.1),
                         ),
                       ),
                   ],
@@ -425,7 +425,7 @@ class _XodimCard extends StatelessWidget {
                         label: const Text('Tahrirlash'),
                         style: OutlinedButton.styleFrom(
                           foregroundColor: AppTheme.primaryColor,
-                          side: BorderSide(color: AppTheme.primaryColor),
+                          side: const BorderSide(color: AppTheme.primaryColor),
                           padding: const EdgeInsets.symmetric(vertical: 12),
                         ),
                       ),

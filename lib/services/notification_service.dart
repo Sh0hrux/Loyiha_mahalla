@@ -1,10 +1,11 @@
+import 'package:flutter/foundation.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 // Background message handler - MUST be top-level function
 @pragma('vm:entry-point')
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
-  print('Background message: ${message.notification?.title}');
+  debugPrint('Background message: ${message.notification?.title}');
 }
 
 class NotificationService {
@@ -23,7 +24,7 @@ class NotificationService {
     );
 
     if (settings.authorizationStatus == AuthorizationStatus.authorized) {
-      print('Notification permission granted');
+      debugPrint('Notification permission granted');
     }
 
     // Initialize local notifications
@@ -46,7 +47,7 @@ class NotificationService {
       initSettings,
       onDidReceiveNotificationResponse: (NotificationResponse response) {
         // Handle notification tap
-        print('Notification tapped: ${response.payload}');
+        debugPrint('Notification tapped: ${response.payload}');
       },
     );
 
@@ -77,7 +78,7 @@ class NotificationService {
 
   // Handle foreground message
   static Future<void> _handleForegroundMessage(RemoteMessage message) async {
-    print('Foreground message: ${message.notification?.title}');
+    debugPrint('Foreground message: ${message.notification?.title}');
 
     // Show local notification
     await _showLocalNotification(
@@ -89,7 +90,7 @@ class NotificationService {
 
   // Handle message opened app
   static void _handleMessageOpenedApp(RemoteMessage message) {
-    print('Message opened app: ${message.notification?.title}');
+    debugPrint('Message opened app: ${message.notification?.title}');
     // Navigate to specific screen based on message data
   }
 

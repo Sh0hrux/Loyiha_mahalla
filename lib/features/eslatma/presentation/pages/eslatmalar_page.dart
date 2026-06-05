@@ -132,7 +132,7 @@ class _EslatmalarPageState extends ConsumerState<EslatmalarPage>
             return const EmptyStateWidget(
               icon: Icons.notifications_none,
               title: 'Eslatmalar yo\'q',
-              message: 'Sizga hali hech qanday eslatma yuborilmagan',
+              subtitle: 'Sizga hali hech qanday eslatma yuborilmagan',
             );
           }
 
@@ -168,7 +168,7 @@ class _EslatmalarPageState extends ConsumerState<EslatmalarPage>
       return const EmptyStateWidget(
         icon: Icons.check_circle_outline,
         title: 'Hamma o\'qilgan!',
-        message: 'Sizda o\'qilmagan eslatmalar yo\'q',
+        subtitle: 'Sizda o\'qilmagan eslatmalar yo\'q',
       );
     }
 
@@ -253,7 +253,7 @@ class _EslatmaCard extends ConsumerWidget {
           side: BorderSide(
             color: eslatma.isRead
                 ? Colors.grey.shade300
-                : _getTypeColor().withOpacity(0.5),
+                : _getTypeColor().withValues(alpha: 0.5),
             width: eslatma.isRead ? 1 : 2,
           ),
         ),
@@ -277,7 +277,7 @@ class _EslatmaCard extends ConsumerWidget {
                     Container(
                       padding: const EdgeInsets.all(8),
                       decoration: BoxDecoration(
-                        color: _getTypeColor().withOpacity(0.2),
+                        color: _getTypeColor().withValues(alpha: 0.2),
                         borderRadius: BorderRadius.circular(8),
                       ),
                       child: Text(
@@ -339,7 +339,7 @@ class _EslatmaCard extends ConsumerWidget {
                       Container(
                         width: 10,
                         height: 10,
-                        decoration: BoxDecoration(
+                        decoration: const BoxDecoration(
                           color: AppTheme.primaryColor,
                           shape: BoxShape.circle,
                         ),
@@ -354,7 +354,8 @@ class _EslatmaCard extends ConsumerWidget {
                   style: TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.bold,
-                    color: eslatma.isRead ? Colors.grey.shade700 : Colors.black87,
+                    color:
+                        eslatma.isRead ? Colors.grey.shade700 : Colors.black87,
                   ),
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,

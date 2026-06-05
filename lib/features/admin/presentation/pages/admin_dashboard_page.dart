@@ -15,7 +15,7 @@ class AdminDashboardPage extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final currentUser = ref.watch(currentUserProvider).value;
     final mahallaId = currentUser?.mahallaId;
-    
+
     final arizalarAsync = ref.watch(allArizalarProvider(mahallaId));
     final muammolarAsync = ref.watch(allMuammolarProvider(mahallaId));
     final navbatlarAsync = ref.watch(allNavbatlarProvider(mahallaId));
@@ -52,8 +52,8 @@ class AdminDashboardPage extends ConsumerWidget {
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
             colors: [
-              AppTheme.primaryColor.withOpacity(0.05),
-              AppTheme.secondaryColor.withOpacity(0.05),
+              AppTheme.primaryColor.withValues(alpha: 0.05),
+              AppTheme.secondaryColor.withValues(alpha: 0.05),
             ],
           ),
         ),
@@ -81,7 +81,7 @@ class AdminDashboardPage extends ConsumerWidget {
                               Container(
                                 padding: const EdgeInsets.all(12),
                                 decoration: BoxDecoration(
-                                  color: Colors.white.withOpacity(0.2),
+                                  color: Colors.white.withValues(alpha: 0.2),
                                   borderRadius: BorderRadius.circular(12),
                                 ),
                                 child: const Icon(
@@ -108,7 +108,8 @@ class AdminDashboardPage extends ConsumerWidget {
                                       'Xush kelibsiz, ${currentUser?.fullName ?? "Admin"}',
                                       style: TextStyle(
                                         fontSize: 14,
-                                        color: Colors.white.withOpacity(0.9),
+                                        color:
+                                            Colors.white.withValues(alpha: 0.9),
                                       ),
                                     ),
                                   ],
@@ -141,13 +142,14 @@ class AdminDashboardPage extends ConsumerWidget {
                   children: [
                     // Statistics Cards
                     Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 16, vertical: 12),
                       decoration: BoxDecoration(
                         gradient: AppTheme.primaryGradient,
                         borderRadius: BorderRadius.circular(12),
                         boxShadow: [
                           BoxShadow(
-                            color: AppTheme.primaryColor.withOpacity(0.3),
+                            color: AppTheme.primaryColor.withValues(alpha: 0.3),
                             blurRadius: 8,
                             offset: const Offset(0, 4),
                           ),
@@ -227,13 +229,14 @@ class AdminDashboardPage extends ConsumerWidget {
 
                     // Quick Actions
                     Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 16, vertical: 12),
                       decoration: BoxDecoration(
                         gradient: AppTheme.primaryGradient,
                         borderRadius: BorderRadius.circular(12),
                         boxShadow: [
                           BoxShadow(
-                            color: AppTheme.primaryColor.withOpacity(0.3),
+                            color: AppTheme.primaryColor.withValues(alpha: 0.3),
                             blurRadius: 8,
                             offset: const Offset(0, 4),
                           ),
@@ -289,6 +292,24 @@ class AdminDashboardPage extends ConsumerWidget {
                       color: AppTheme.successColor,
                       onTap: () => context.push('/xodimlar'),
                     ),
+                    const SizedBox(height: 12),
+
+                    _ActionCard(
+                      icon: Icons.send_outlined,
+                      title: 'Eslatma yuborish',
+                      subtitle: 'Foydalanuvchilarga bildirishnoma',
+                      color: const Color(0xFFEC4899),
+                      onTap: () => context.push('/yangi-eslatma'),
+                    ),
+                    const SizedBox(height: 12),
+
+                    _ActionCard(
+                      icon: Icons.notifications_active_outlined,
+                      title: 'Eslatmalar',
+                      subtitle: 'Yuborilgan eslatmalar',
+                      color: const Color(0xFFDB2777),
+                      onTap: () => context.push('/eslatmalar'),
+                    ),
 
                     const SizedBox(height: 32),
 
@@ -297,7 +318,7 @@ class AdminDashboardPage extends ConsumerWidget {
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(16),
                         border: Border.all(
-                          color: Colors.red.withOpacity(0.3),
+                          color: Colors.red.withValues(alpha: 0.3),
                           width: 1.5,
                         ),
                       ),
@@ -305,7 +326,9 @@ class AdminDashboardPage extends ConsumerWidget {
                         color: Colors.transparent,
                         child: InkWell(
                           onTap: () async {
-                            await ref.read(currentUserProvider.notifier).signOut();
+                            await ref
+                                .read(currentUserProvider.notifier)
+                                .signOut();
                             if (context.mounted) {
                               context.go('/login');
                             }
@@ -371,7 +394,7 @@ class _StatCard extends StatelessWidget {
         borderRadius: BorderRadius.circular(16),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.05),
+            color: Colors.black.withValues(alpha: 0.05),
             blurRadius: 10,
             offset: const Offset(0, 4),
           ),
@@ -390,7 +413,7 @@ class _StatCard extends StatelessWidget {
                 Container(
                   padding: const EdgeInsets.all(10),
                   decoration: BoxDecoration(
-                    color: color.withOpacity(0.1),
+                    color: color.withValues(alpha: 0.1),
                     borderRadius: BorderRadius.circular(12),
                   ),
                   child: Icon(
@@ -449,7 +472,7 @@ class _ActionCard extends StatelessWidget {
         borderRadius: BorderRadius.circular(16),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.05),
+            color: Colors.black.withValues(alpha: 0.05),
             blurRadius: 10,
             offset: const Offset(0, 4),
           ),
@@ -467,7 +490,7 @@ class _ActionCard extends StatelessWidget {
                 Container(
                   padding: const EdgeInsets.all(12),
                   decoration: BoxDecoration(
-                    color: color.withOpacity(0.1),
+                    color: color.withValues(alpha: 0.1),
                     borderRadius: BorderRadius.circular(12),
                   ),
                   child: Icon(

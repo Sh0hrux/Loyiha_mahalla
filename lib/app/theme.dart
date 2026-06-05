@@ -105,7 +105,7 @@ class AppTheme {
       ),
       margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       color: Colors.white,
-      shadowColor: Colors.black.withOpacity(0.1),
+      shadowColor: Colors.black.withValues(alpha: 0.1),
     ),
     
     // Input Decoration Theme - Zamonaviy
@@ -141,7 +141,7 @@ class AppTheme {
           borderRadius: BorderRadius.circular(16),
         ),
         elevation: 0,
-        shadowColor: primaryColor.withOpacity(0.3),
+        shadowColor: primaryColor.withValues(alpha: 0.3),
         textStyle: GoogleFonts.poppins(
           fontSize: 16,
           fontWeight: FontWeight.w600,

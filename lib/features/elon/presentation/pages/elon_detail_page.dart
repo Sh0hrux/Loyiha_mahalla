@@ -62,7 +62,7 @@ class ElonDetailPage extends ConsumerWidget {
                                   end: Alignment.bottomCenter,
                                   colors: [
                                     Colors.transparent,
-                                    Colors.black.withOpacity(0.7),
+                                    Colors.black.withValues(alpha: 0.7),
                                   ],
                                 ),
                               ),
@@ -105,7 +105,7 @@ class ElonDetailPage extends ConsumerWidget {
                                 colors: [
                                   _getCategoryColor(elon.category),
                                   _getCategoryColor(elon.category)
-                                      .withOpacity(0.7),
+                                      .withValues(alpha: 0.7),
                                 ],
                               ),
                               borderRadius: BorderRadius.circular(20),
@@ -155,10 +155,10 @@ class ElonDetailPage extends ConsumerWidget {
                           Container(
                             padding: const EdgeInsets.all(8),
                             decoration: BoxDecoration(
-                              color: AppTheme.primaryColor.withOpacity(0.1),
+                              color: AppTheme.primaryColor.withValues(alpha: 0.1),
                               shape: BoxShape.circle,
                             ),
-                            child: Icon(
+                            child: const Icon(
                               Icons.person,
                               color: AppTheme.primaryColor,
                               size: 20,
@@ -211,10 +211,10 @@ class ElonDetailPage extends ConsumerWidget {
                         Container(
                           padding: const EdgeInsets.all(16),
                           decoration: BoxDecoration(
-                            color: Colors.orange.withOpacity(0.1),
+                            color: Colors.orange.withValues(alpha: 0.1),
                             borderRadius: BorderRadius.circular(12),
                             border: Border.all(
-                              color: Colors.orange.withOpacity(0.3),
+                              color: Colors.orange.withValues(alpha: 0.3),
                             ),
                           ),
                           child: Row(

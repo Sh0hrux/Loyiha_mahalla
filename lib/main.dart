@@ -25,7 +25,7 @@ void main() async {
     final mahallaSetup = MahallaSetupService();
     await mahallaSetup.setupMahallas();
   } catch (e) {
-    print('⚠️ Mahalla setup error (non-critical): $e');
+    debugPrint('⚠️ Mahalla setup error (non-critical): $e');
   }
   
   runApp(

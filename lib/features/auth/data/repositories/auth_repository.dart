@@ -1,10 +1,48 @@
 import 'dart:async';
+import 'package:flutter/foundation.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../../../core/constants/app_constants.dart';
 import '../../../../services/firebase_service.dart';
 import '../models/user_model.dart';
+
+/// Foydalanuvchiga ko'rsatish uchun toza (tushunarli) xato xabari.
+/// toString() faqat xabarni qaytaradi ("Exception:" prefiksisiz).
+class AuthException implements Exception {
+  final String message;
+  AuthException(this.message);
+
+  @override
+  String toString() => message;
+}
+
+/// Firebase Auth xato kodlarini tushunarli o'zbekcha xabarga o'giradi.
+String _mapAuthError(FirebaseAuthException e) {
+  switch (e.code) {
+    case 'invalid-credential':
+    case 'wrong-password':
+    case 'user-not-found':
+    case 'INVALID_LOGIN_CREDENTIALS':
+      return 'Email yoki parol noto\'g\'ri';
+    case 'invalid-email':
+      return 'Email manzili noto\'g\'ri kiritilgan';
+    case 'user-disabled':
+      return 'Bu hisob bloklangan. Admin bilan bog\'laning';
+    case 'too-many-requests':
+      return 'Juda ko\'p urinish bo\'ldi. Birozdan keyin qayta urinib ko\'ring';
+    case 'network-request-failed':
+      return 'Internet aloqasi yo\'q. Tarmoqni tekshiring';
+    case 'email-already-in-use':
+      return 'Bu email allaqachon ro\'yxatdan o\'tgan';
+    case 'weak-password':
+      return 'Parol juda oddiy. Kamida 6 ta belgidan iborat kuchli parol tanlang';
+    case 'operation-not-allowed':
+      return 'Bu kirish usuli yoqilmagan. Admin bilan bog\'laning';
+    default:
+      return 'Xatolik yuz berdi. Qaytadan urinib ko\'ring';
+  }
+}
 
 class AuthRepository {
   final FirebaseAuth _auth = FirebaseService.auth;
@@ -20,8 +58,11 @@ class AuthRepository {
         email: email,
         password: password,
       );
+    } on FirebaseAuthException catch (e) {
+      throw AuthException(_mapAuthError(e));
     } catch (e) {
-      throw Exception('Kirish xatosi: ${e.toString()}');
+      throw AuthException(
+          'Kirishda xatolik yuz berdi. Qaytadan urinib ko\'ring');
     }
   }
 
@@ -35,8 +76,11 @@ class AuthRepository {
         email: email,
         password: password,
       );
+    } on FirebaseAuthException catch (e) {
+      throw AuthException(_mapAuthError(e));
     } catch (e) {
-      throw Exception('Ro\'yxatdan o\'tish xatosi: ${e.toString()}');
+      throw AuthException(
+          'Ro\'yxatdan o\'tishda xatolik yuz berdi. Qaytadan urinib ko\'ring');
     }
   }
 
@@ -44,8 +88,11 @@ class AuthRepository {
   Future<void> resetPassword(String email) async {
     try {
       await _auth.sendPasswordResetEmail(email: email);
+    } on FirebaseAuthException catch (e) {
+      throw AuthException(_mapAuthError(e));
     } catch (e) {
-      throw Exception('Parolni tiklash xatosi: ${e.toString()}');
+      throw AuthException(
+          'Parolni tiklashda xatolik yuz berdi. Qaytadan urinib ko\'ring');
     }
   }
 
@@ -80,10 +127,10 @@ class AuthRepository {
         return newUser;
       }
     } on FirebaseException catch (e) {
-      print('Firebase xatosi: ${e.code} - ${e.message}');
+      debugPrint('Firebase xatosi: ${e.code} - ${e.message}');
       throw Exception('Firebase xatosi: ${e.message}');
     } catch (e) {
-      print('Xatolik: $e');
+      debugPrint('Xatolik: $e');
       throw Exception('Foydalanuvchi yaratishda xatolik: ${e.toString()}');
     }
   }

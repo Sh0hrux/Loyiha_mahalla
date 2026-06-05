@@ -76,7 +76,7 @@ class UsersRepository {
         .collection('users')
         .orderBy('fullName')
         .startAt([query])
-        .endAt([query + '\uf8ff'])
+        .endAt(['$query\uf8ff'])
         .get();
 
     return snapshot.docs.map((doc) => UserModel.fromFirestore(doc)).toList();

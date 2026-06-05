@@ -120,7 +120,7 @@ class _YangiArizaPageState extends ConsumerState<YangiArizaPage> {
           children: [
             // Category
             DropdownButtonFormField<String>(
-              value: _selectedCategory,
+              initialValue: _selectedCategory,
               decoration: const InputDecoration(
                 labelText: 'Kategoriya',
                 prefixIcon: Icon(Icons.category),

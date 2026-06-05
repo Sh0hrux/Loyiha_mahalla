@@ -1,9 +1,7 @@
-import 'dart:io';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:printing/printing.dart';
 import 'package:intl/intl.dart';
-import 'package:path_provider/path_provider.dart';
 
 class PdfService {
   static Future<void> generateHisobotPdf({
@@ -46,7 +44,7 @@ class PdfService {
                 pw.SizedBox(height: 8),
                 pw.Text(
                   title,
-                  style: pw.TextStyle(
+                  style: const pw.TextStyle(
                     fontSize: 18,
                     color: PdfColors.white,
                   ),
@@ -55,7 +53,7 @@ class PdfService {
                   pw.SizedBox(height: 4),
                   pw.Text(
                     DateFormat('MMMM yyyy', 'uz').format(selectedMonth),
-                    style: pw.TextStyle(
+                    style: const pw.TextStyle(
                       fontSize: 14,
                       color: PdfColors.white,
                     ),
@@ -69,7 +67,7 @@ class PdfService {
           // Date
           pw.Text(
             'Hisobot sanasi: ${DateFormat('dd.MM.yyyy HH:mm').format(DateTime.now())}',
-            style: pw.TextStyle(
+            style: const pw.TextStyle(
               fontSize: 12,
               color: PdfColors.grey700,
             ),
@@ -212,7 +210,7 @@ class PdfService {
         pw.SizedBox(height: 8),
         pw.Text(
           label,
-          style: pw.TextStyle(
+          style: const pw.TextStyle(
             fontSize: 12,
             color: PdfColors.grey700,
           ),

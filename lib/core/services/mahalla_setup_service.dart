@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import '../constants/mahalla_data.dart';
 import '../models/mahalla_model.dart';
@@ -8,11 +9,11 @@ class MahallaSetupService {
   // Setup initial mahallas in Firebase
   Future<void> setupMahallas() async {
     try {
-      print('🟢 Setting up mahallas...');
+      debugPrint('🟢 Setting up mahallas...');
 
       // Toshkent shahri, Yunusobod tumani mahallalari
       final mahallas = MahallaData.getMahallas('Yunusobod tumani');
-      
+
       for (final mahallaName in mahallas) {
         // Check if mahalla already exists
         final querySnapshot = await _firestore
@@ -35,15 +36,15 @@ class MahallaSetupService {
               .collection('mahallalar')
               .add(mahalla.toFirestore());
 
-          print('✅ Created mahalla: $mahallaName (${docRef.id})');
+          debugPrint('✅ Created mahalla: $mahallaName (${docRef.id})');
         } else {
-          print('⚠️ Mahalla already exists: $mahallaName');
+          debugPrint('⚠️ Mahalla already exists: $mahallaName');
         }
       }
 
-      print('🎉 Mahalla setup completed!');
+      debugPrint('🎉 Mahalla setup completed!');
     } catch (e) {
-      print('❌ Error setting up mahallas: $e');
+      debugPrint('❌ Error setting up mahallas: $e');
       rethrow;
     }
   }
@@ -51,16 +52,14 @@ class MahallaSetupService {
   // Get all mahallas
   Future<List<MahallaModel>> getAllMahallas() async {
     try {
-      final querySnapshot = await _firestore
-          .collection('mahallalar')
-          .orderBy('name')
-          .get();
+      final querySnapshot =
+          await _firestore.collection('mahallalar').orderBy('name').get();
 
       return querySnapshot.docs
           .map((doc) => MahallaModel.fromFirestore(doc))
           .toList();
     } catch (e) {
-      print('❌ Error getting mahallas: $e');
+      debugPrint('❌ Error getting mahallas: $e');
       return [];
     }
   }
@@ -68,17 +67,15 @@ class MahallaSetupService {
   // Get mahalla by ID
   Future<MahallaModel?> getMahallaById(String mahallaId) async {
     try {
-      final doc = await _firestore
-          .collection('mahallalar')
-          .doc(mahallaId)
-          .get();
+      final doc =
+          await _firestore.collection('mahallalar').doc(mahallaId).get();
 
       if (doc.exists) {
         return MahallaModel.fromFirestore(doc);
       }
       return null;
     } catch (e) {
-      print('❌ Error getting mahalla: $e');
+      debugPrint('❌ Error getting mahalla: $e');
       return null;
     }
   }
@@ -96,7 +93,7 @@ class MahallaSetupService {
           .map((doc) => MahallaModel.fromFirestore(doc))
           .toList();
     } catch (e) {
-      print('❌ Error getting mahallas by district: $e');
+      debugPrint('❌ Error getting mahallas by district: $e');
       return [];
     }
   }

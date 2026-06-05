@@ -61,7 +61,7 @@ class _YangiElonPageState extends ConsumerState<YangiElonPage> {
       builder: (context, child) {
         return Theme(
           data: Theme.of(context).copyWith(
-            colorScheme: ColorScheme.light(
+            colorScheme: const ColorScheme.light(
               primary: AppTheme.primaryColor,
               onPrimary: Colors.white,
               surface: Colors.white,
@@ -162,8 +162,8 @@ class _YangiElonPageState extends ConsumerState<YangiElonPage> {
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
             colors: [
-              AppTheme.secondaryColor.withOpacity(0.05),
-              AppTheme.primaryColor.withOpacity(0.05),
+              AppTheme.secondaryColor.withValues(alpha: 0.05),
+              AppTheme.primaryColor.withValues(alpha: 0.05),
             ],
           ),
         ),
@@ -211,14 +211,14 @@ class _YangiElonPageState extends ConsumerState<YangiElonPage> {
                           borderRadius: BorderRadius.circular(16),
                           boxShadow: [
                             BoxShadow(
-                              color: Colors.black.withOpacity(0.05),
+                              color: Colors.black.withValues(alpha: 0.05),
                               blurRadius: 10,
                               offset: const Offset(0, 4),
                             ),
                           ],
                         ),
                         child: DropdownButtonFormField<String>(
-                          value: _selectedCategory,
+                          initialValue: _selectedCategory,
                           decoration: const InputDecoration(
                             labelText: 'Kategoriya',
                             prefixIcon: Icon(Icons.category_outlined),
@@ -252,7 +252,7 @@ class _YangiElonPageState extends ConsumerState<YangiElonPage> {
                           borderRadius: BorderRadius.circular(16),
                           boxShadow: [
                             BoxShadow(
-                              color: Colors.black.withOpacity(0.05),
+                              color: Colors.black.withValues(alpha: 0.05),
                               blurRadius: 10,
                               offset: const Offset(0, 4),
                             ),
@@ -290,7 +290,7 @@ class _YangiElonPageState extends ConsumerState<YangiElonPage> {
                           borderRadius: BorderRadius.circular(16),
                           boxShadow: [
                             BoxShadow(
-                              color: Colors.black.withOpacity(0.05),
+                              color: Colors.black.withValues(alpha: 0.05),
                               blurRadius: 10,
                               offset: const Offset(0, 4),
                             ),
@@ -326,7 +326,7 @@ class _YangiElonPageState extends ConsumerState<YangiElonPage> {
                           borderRadius: BorderRadius.circular(16),
                           boxShadow: [
                             BoxShadow(
-                              color: Colors.black.withOpacity(0.05),
+                              color: Colors.black.withValues(alpha: 0.05),
                               blurRadius: 10,
                               offset: const Offset(0, 4),
                             ),
@@ -337,7 +337,7 @@ class _YangiElonPageState extends ConsumerState<YangiElonPage> {
                             horizontal: 20,
                             vertical: 8,
                           ),
-                          leading: Icon(
+                          leading: const Icon(
                             Icons.event_outlined,
                             color: AppTheme.primaryColor,
                           ),
@@ -384,7 +384,7 @@ class _YangiElonPageState extends ConsumerState<YangiElonPage> {
                         style: OutlinedButton.styleFrom(
                           padding: const EdgeInsets.symmetric(vertical: 14),
                           side: BorderSide(
-                            color: AppTheme.primaryColor.withOpacity(0.5),
+                            color: AppTheme.primaryColor.withValues(alpha: 0.5),
                           ),
                         ),
                       ),
@@ -440,7 +440,7 @@ class _YangiElonPageState extends ConsumerState<YangiElonPage> {
                           borderRadius: BorderRadius.circular(16),
                           boxShadow: [
                             BoxShadow(
-                              color: const Color(0xFF8B5CF6).withOpacity(0.3),
+                              color: const Color(0xFF8B5CF6).withValues(alpha: 0.3),
                               blurRadius: 12,
                               offset: const Offset(0, 6),
                             ),

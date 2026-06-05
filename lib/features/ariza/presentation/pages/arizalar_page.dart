@@ -35,8 +35,8 @@ class ArizalarPage extends ConsumerWidget {
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
             colors: [
-              AppTheme.primaryColor.withOpacity(0.05),
-              AppTheme.secondaryColor.withOpacity(0.05),
+              AppTheme.primaryColor.withValues(alpha: 0.05),
+              AppTheme.secondaryColor.withValues(alpha: 0.05),
             ],
           ),
         ),
@@ -128,7 +128,7 @@ class ArizalarPage extends ConsumerWidget {
                 borderRadius: BorderRadius.circular(16),
                 boxShadow: [
                   BoxShadow(
-                    color: AppTheme.primaryColor.withOpacity(0.3),
+                    color: AppTheme.primaryColor.withValues(alpha: 0.3),
                     blurRadius: 12,
                     offset: const Offset(0, 6),
                   ),
@@ -199,7 +199,7 @@ class _ModernArizaCard extends StatelessWidget {
         borderRadius: BorderRadius.circular(20),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.05),
+            color: Colors.black.withValues(alpha: 0.05),
             blurRadius: 10,
             offset: const Offset(0, 4),
           ),
@@ -225,7 +225,7 @@ class _ModernArizaCard extends StatelessWidget {
                         gradient: LinearGradient(
                           colors: [
                             statusColor,
-                            statusColor.withOpacity(0.7),
+                            statusColor.withValues(alpha: 0.7),
                           ],
                         ),
                         borderRadius: BorderRadius.circular(12),
@@ -284,10 +284,10 @@ class _ModernArizaCard extends StatelessWidget {
                         vertical: 6,
                       ),
                       decoration: BoxDecoration(
-                        color: statusColor.withOpacity(0.1),
+                        color: statusColor.withValues(alpha: 0.1),
                         borderRadius: BorderRadius.circular(20),
                         border: Border.all(
-                          color: statusColor.withOpacity(0.3),
+                          color: statusColor.withValues(alpha: 0.3),
                           width: 1.5,
                         ),
                       ),
@@ -329,14 +329,14 @@ class _ModernArizaCard extends StatelessWidget {
                   Container(
                     padding: const EdgeInsets.all(12),
                     decoration: BoxDecoration(
-                      color: AppTheme.primaryColor.withOpacity(0.05),
+                      color: AppTheme.primaryColor.withValues(alpha: 0.05),
                       borderRadius: BorderRadius.circular(12),
                     ),
                     child: Column(
                       children: [
                         Row(
                           children: [
-                            Icon(
+                            const Icon(
                               Icons.person_outline,
                               size: 18,
                               color: AppTheme.primaryColor,
@@ -359,7 +359,7 @@ class _ModernArizaCard extends StatelessWidget {
                         const SizedBox(height: 8),
                         Row(
                           children: [
-                            Icon(
+                            const Icon(
                               Icons.phone_outlined,
                               size: 18,
                               color: AppTheme.primaryColor,
@@ -395,13 +395,13 @@ class _ModernArizaCard extends StatelessWidget {
                           vertical: 6,
                         ),
                         decoration: BoxDecoration(
-                          color: AppTheme.accentColor.withOpacity(0.1),
+                          color: AppTheme.accentColor.withValues(alpha: 0.1),
                           borderRadius: BorderRadius.circular(20),
                         ),
                         child: Row(
                           mainAxisSize: MainAxisSize.min,
                           children: [
-                            Icon(
+                            const Icon(
                               Icons.image_outlined,
                               size: 16,
                               color: AppTheme.accentColor,
@@ -409,7 +409,7 @@ class _ModernArizaCard extends StatelessWidget {
                             const SizedBox(width: 6),
                             Text(
                               '${ariza.imageUrls.length} ta rasm',
-                              style: TextStyle(
+                              style: const TextStyle(
                                 fontSize: 12,
                                 color: AppTheme.accentColor,
                                 fontWeight: FontWeight.w600,

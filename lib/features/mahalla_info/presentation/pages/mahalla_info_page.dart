@@ -31,8 +31,8 @@ class MahallaInfoPage extends StatelessWidget {
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
             colors: [
-              AppTheme.accentColor.withOpacity(0.05),
-              AppTheme.primaryColor.withOpacity(0.05),
+              AppTheme.accentColor.withValues(alpha: 0.05),
+              AppTheme.primaryColor.withValues(alpha: 0.05),
             ],
           ),
         ),
@@ -43,7 +43,7 @@ class MahallaInfoPage extends StatelessWidget {
               expandedHeight: 120,
               floating: false,
               pinned: true,
-              backgroundColor: const Color(0xFF06B6D4).withOpacity(0.95),
+              backgroundColor: const Color(0xFF06B6D4).withValues(alpha: 0.95),
               flexibleSpace: FlexibleSpaceBar(
                 title: const Text(
                   'Mahalla haqida',
@@ -83,7 +83,7 @@ class MahallaInfoPage extends StatelessWidget {
                         borderRadius: BorderRadius.circular(20),
                         boxShadow: [
                           BoxShadow(
-                            color: Colors.black.withOpacity(0.05),
+                            color: Colors.black.withValues(alpha: 0.05),
                             blurRadius: 10,
                             offset: const Offset(0, 4),
                           ),
@@ -94,7 +94,7 @@ class MahallaInfoPage extends StatelessWidget {
                           // Logo
                           Container(
                             padding: const EdgeInsets.all(20),
-                            decoration: BoxDecoration(
+                            decoration: const BoxDecoration(
                               gradient: AppTheme.primaryGradient,
                               shape: BoxShape.circle,
                             ),
@@ -117,7 +117,7 @@ class MahallaInfoPage extends StatelessWidget {
                             textAlign: TextAlign.center,
                           ),
                           const SizedBox(height: 8),
-                          Text(
+                          const Text(
                             'Toshkent shahar, Chilonzor tumani',
                             style: TextStyle(
                               fontSize: 16,
@@ -150,7 +150,7 @@ class MahallaInfoPage extends StatelessWidget {
                     ),
                     const SizedBox(height: 16),
 
-                    _InfoCard(
+                    const _InfoCard(
                       icon: Icons.access_time_outlined,
                       title: 'Ish vaqti',
                       content: 'Dushanba - Juma: 09:00 - 18:00\nShanba: 09:00 - 13:00\nYakshanba: Dam olish',
@@ -166,7 +166,7 @@ class MahallaInfoPage extends StatelessWidget {
                         borderRadius: BorderRadius.circular(20),
                         boxShadow: [
                           BoxShadow(
-                            color: Colors.black.withOpacity(0.05),
+                            color: Colors.black.withValues(alpha: 0.05),
                             blurRadius: 10,
                             offset: const Offset(0, 4),
                           ),
@@ -180,10 +180,10 @@ class MahallaInfoPage extends StatelessWidget {
                               Container(
                                 padding: const EdgeInsets.all(8),
                                 decoration: BoxDecoration(
-                                  color: AppTheme.secondaryColor.withOpacity(0.1),
+                                  color: AppTheme.secondaryColor.withValues(alpha: 0.1),
                                   borderRadius: BorderRadius.circular(12),
                                 ),
-                                child: Icon(
+                                child: const Icon(
                                   Icons.info_outline,
                                   color: AppTheme.secondaryColor,
                                 ),
@@ -200,7 +200,7 @@ class MahallaInfoPage extends StatelessWidget {
                             ],
                           ),
                           const SizedBox(height: 16),
-                          Text(
+                          const Text(
                             'Mahalla xizmati - bu mahalliy jamoatchilik boshqaruvi organi bo\'lib, fuqarolarning manfaatlarini himoya qilish, ijtimoiy muammolarni hal qilish va mahalla hayotini yaxshilash uchun faoliyat yuritadi.\n\n'
                             'Bizning vazifalarimiz:\n'
                             '• Fuqarolar arizalarini ko\'rib chiqish\n'
@@ -228,7 +228,7 @@ class MahallaInfoPage extends StatelessWidget {
                         borderRadius: BorderRadius.circular(16),
                         boxShadow: [
                           BoxShadow(
-                            color: const Color(0xFF06B6D4).withOpacity(0.3),
+                            color: const Color(0xFF06B6D4).withValues(alpha: 0.3),
                             blurRadius: 12,
                             offset: const Offset(0, 6),
                           ),
@@ -297,7 +297,7 @@ class _InfoCard extends StatelessWidget {
         borderRadius: BorderRadius.circular(16),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.05),
+            color: Colors.black.withValues(alpha: 0.05),
             blurRadius: 10,
             offset: const Offset(0, 4),
           ),
@@ -315,7 +315,7 @@ class _InfoCard extends StatelessWidget {
                 Container(
                   padding: const EdgeInsets.all(12),
                   decoration: BoxDecoration(
-                    color: color.withOpacity(0.1),
+                    color: color.withValues(alpha: 0.1),
                     borderRadius: BorderRadius.circular(12),
                   ),
                   child: Icon(

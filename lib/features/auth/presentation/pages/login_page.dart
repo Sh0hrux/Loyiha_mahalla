@@ -103,10 +103,10 @@ class _LoginPageState extends ConsumerState<LoginPage>
                       Container(
                         padding: const EdgeInsets.all(20),
                         decoration: BoxDecoration(
-                          color: Colors.white.withOpacity(0.25),
+                          color: Colors.white.withValues(alpha: 0.25),
                           shape: BoxShape.circle,
                           border: Border.all(
-                            color: Colors.white.withOpacity(0.4),
+                            color: Colors.white.withValues(alpha: 0.4),
                             width: 2,
                           ),
                         ),
@@ -133,7 +133,7 @@ class _LoginPageState extends ConsumerState<LoginPage>
                         'Rasmiy mobil ilova',
                         style: TextStyle(
                           fontSize: 14,
-                          color: Colors.white.withOpacity(0.95),
+                          color: Colors.white.withValues(alpha: 0.95),
                           fontWeight: FontWeight.w500,
                         ),
                         textAlign: TextAlign.center,
@@ -148,7 +148,7 @@ class _LoginPageState extends ConsumerState<LoginPage>
                           borderRadius: BorderRadius.circular(24),
                           boxShadow: [
                             BoxShadow(
-                              color: Colors.black.withOpacity(0.15),
+                              color: Colors.black.withValues(alpha: 0.15),
                               blurRadius: 24,
                               offset: const Offset(0, 12),
                             ),
@@ -322,7 +322,7 @@ class _LoginPageState extends ConsumerState<LoginPage>
                                   onPressed: () {
                                     context.push('/forgot-password');
                                   },
-                                  child: Text(
+                                  child: const Text(
                                     'Parolni unutdingizmi?',
                                     style: TextStyle(
                                       color: AppTheme.primaryColor,
@@ -341,7 +341,7 @@ class _LoginPageState extends ConsumerState<LoginPage>
                                   borderRadius: BorderRadius.circular(16),
                                   boxShadow: [
                                     BoxShadow(
-                                      color: AppTheme.primaryColor.withOpacity(0.3),
+                                      color: AppTheme.primaryColor.withValues(alpha: 0.3),
                                       blurRadius: 12,
                                       offset: const Offset(0, 6),
                                     ),
@@ -393,7 +393,7 @@ class _LoginPageState extends ConsumerState<LoginPage>
                                     onPressed: () {
                                       context.push('/signup');
                                     },
-                                    child: Text(
+                                    child: const Text(
                                       'Ro\'yxatdan o\'tish',
                                       style: TextStyle(
                                         color: AppTheme.primaryColor,

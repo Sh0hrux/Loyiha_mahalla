@@ -58,8 +58,10 @@ class _EslatmaDetailPageState extends ConsumerState<EslatmaDetailPage> {
     );
 
     if (confirmed == true && mounted) {
-      await ref.read(eslatmaNotifierProvider.notifier).deleteEslatma(widget.eslatmaId);
-      if (mounted) {
+      await ref
+          .read(eslatmaNotifierProvider.notifier)
+          .deleteEslatma(widget.eslatmaId);
+      if (context.mounted) {
         context.pop();
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
@@ -122,7 +124,8 @@ Sana: ${DateFormat('dd.MM.yyyy HH:mm').format(eslatma.createdAt)}
                           children: [
                             Icon(Icons.delete, color: Colors.red),
                             SizedBox(width: 12),
-                            Text('O\'chirish', style: TextStyle(color: Colors.red)),
+                            Text('O\'chirish',
+                                style: TextStyle(color: Colors.red)),
                           ],
                         ),
                       ),
@@ -166,7 +169,7 @@ Sana: ${DateFormat('dd.MM.yyyy HH:mm').format(eslatma.createdAt)}
                     gradient: LinearGradient(
                       colors: [
                         typeColor,
-                        typeColor.withOpacity(0.7),
+                        typeColor.withValues(alpha: 0.7),
                       ],
                       begin: Alignment.topLeft,
                       end: Alignment.bottomRight,
@@ -182,7 +185,7 @@ Sana: ${DateFormat('dd.MM.yyyy HH:mm').format(eslatma.createdAt)}
                           vertical: 6,
                         ),
                         decoration: BoxDecoration(
-                          color: Colors.white.withOpacity(0.3),
+                          color: Colors.white.withValues(alpha: 0.3),
                           borderRadius: BorderRadius.circular(20),
                         ),
                         child: Row(
@@ -308,13 +311,13 @@ Sana: ${DateFormat('dd.MM.yyyy HH:mm').format(eslatma.createdAt)}
                         runSpacing: 8,
                         children: [
                           if (eslatma.isNew)
-                            Chip(
-                              avatar: const Icon(
+                            const Chip(
+                              avatar: Icon(
                                 Icons.fiber_new,
                                 size: 18,
                                 color: Colors.white,
                               ),
-                              label: const Text(
+                              label: Text(
                                 'Yangi eslatma',
                                 style: TextStyle(color: Colors.white),
                               ),
@@ -334,13 +337,13 @@ Sana: ${DateFormat('dd.MM.yyyy HH:mm').format(eslatma.createdAt)}
                               backgroundColor: Colors.grey.shade200,
                             ),
                           if (eslatma.isExpired)
-                            Chip(
-                              avatar: const Icon(
+                            const Chip(
+                              avatar: Icon(
                                 Icons.event_busy,
                                 size: 18,
                                 color: Colors.white,
                               ),
-                              label: const Text(
+                              label: Text(
                                 'Muddati o\'tgan',
                                 style: TextStyle(color: Colors.white),
                               ),
@@ -391,10 +394,10 @@ class _InfoCard extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: color.withOpacity(0.1),
+        color: color.withValues(alpha: 0.1),
         borderRadius: BorderRadius.circular(12),
         border: Border.all(
-          color: color.withOpacity(0.3),
+          color: color.withValues(alpha: 0.3),
         ),
       ),
       child: Row(
@@ -402,7 +405,7 @@ class _InfoCard extends StatelessWidget {
           Container(
             padding: const EdgeInsets.all(8),
             decoration: BoxDecoration(
-              color: color.withOpacity(0.2),
+              color: color.withValues(alpha: 0.2),
               borderRadius: BorderRadius.circular(8),
             ),
             child: Icon(icon, color: color, size: 20),

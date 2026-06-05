@@ -19,8 +19,8 @@ class HomePage extends ConsumerWidget {
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
             colors: [
-              AppTheme.primaryColor.withOpacity(0.05),
-              AppTheme.secondaryColor.withOpacity(0.05),
+              AppTheme.primaryColor.withValues(alpha: 0.05),
+              AppTheme.secondaryColor.withValues(alpha: 0.05),
             ],
           ),
         ),
@@ -53,14 +53,22 @@ class HomePage extends ConsumerWidget {
                             children: [
                               Text(
                                 'Assalomu aleykum,',
-                                style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .titleMedium
+                                    ?.copyWith(
                                       color: Colors.white70,
                                     ),
                               ),
                               const SizedBox(height: 4),
                               Text(
-                                user.fullName.isNotEmpty ? user.fullName : 'Foydalanuvchi',
-                                style: Theme.of(context).textTheme.headlineMedium?.copyWith(
+                                user.fullName.isNotEmpty
+                                    ? user.fullName
+                                    : 'Foydalanuvchi',
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .headlineMedium
+                                    ?.copyWith(
                                       color: Colors.white,
                                       fontWeight: FontWeight.bold,
                                     ),
@@ -72,10 +80,10 @@ class HomePage extends ConsumerWidget {
                                   vertical: 6,
                                 ),
                                 decoration: BoxDecoration(
-                                  color: Colors.white.withOpacity(0.2),
+                                  color: Colors.white.withValues(alpha: 0.2),
                                   borderRadius: BorderRadius.circular(20),
                                   border: Border.all(
-                                    color: Colors.white.withOpacity(0.3),
+                                    color: Colors.white.withValues(alpha: 0.3),
                                     width: 1,
                                   ),
                                 ),
@@ -83,7 +91,9 @@ class HomePage extends ConsumerWidget {
                                   mainAxisSize: MainAxisSize.min,
                                   children: [
                                     Icon(
-                                      isAdmin ? Icons.admin_panel_settings : Icons.person,
+                                      isAdmin
+                                          ? Icons.admin_panel_settings
+                                          : Icons.person,
                                       color: Colors.white,
                                       size: 16,
                                     ),
@@ -147,7 +157,10 @@ class HomePage extends ConsumerWidget {
                                     padding: const EdgeInsets.all(8),
                                     decoration: BoxDecoration(
                                       gradient: const LinearGradient(
-                                        colors: [Color(0xFFF59E0B), Color(0xFFEF4444)],
+                                        colors: [
+                                          Color(0xFFF59E0B),
+                                          Color(0xFFEF4444)
+                                        ],
                                       ),
                                       borderRadius: BorderRadius.circular(10),
                                     ),
@@ -227,7 +240,6 @@ class HomePage extends ConsumerWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-
                         // Section Title
                         Row(
                           children: [
@@ -242,7 +254,10 @@ class HomePage extends ConsumerWidget {
                             const SizedBox(width: 12),
                             Text(
                               'Xizmatlar',
-                              style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .titleLarge
+                                  ?.copyWith(
                                     fontWeight: FontWeight.bold,
                                   ),
                             ),
@@ -264,7 +279,10 @@ class HomePage extends ConsumerWidget {
                                 icon: Icons.description_outlined,
                                 title: 'Arizalar',
                                 subtitle: 'Ariza yuborish',
-                                gradientColors: const [Color(0xFF6366F1), Color(0xFF8B5CF6)],
+                                gradientColors: const [
+                                  Color(0xFF6366F1),
+                                  Color(0xFF8B5CF6)
+                                ],
                                 onTap: () {
                                   context.push('/arizalar');
                                 },
@@ -273,7 +291,10 @@ class HomePage extends ConsumerWidget {
                                 icon: Icons.report_problem_outlined,
                                 title: 'Muammo bildirish',
                                 subtitle: 'Muammo yuborish',
-                                gradientColors: const [Color(0xFFF59E0B), Color(0xFFEF4444)],
+                                gradientColors: const [
+                                  Color(0xFFF59E0B),
+                                  Color(0xFFEF4444)
+                                ],
                                 onTap: () {
                                   context.push('/muammolar');
                                 },
@@ -282,7 +303,10 @@ class HomePage extends ConsumerWidget {
                                 icon: Icons.calendar_today_outlined,
                                 title: 'Online navbat',
                                 subtitle: 'Navbat band qilish',
-                                gradientColors: const [Color(0xFF10B981), Color(0xFF059669)],
+                                gradientColors: const [
+                                  Color(0xFF10B981),
+                                  Color(0xFF059669)
+                                ],
                                 onTap: () {
                                   context.push('/navbatlar');
                                 },
@@ -291,7 +315,10 @@ class HomePage extends ConsumerWidget {
                                 icon: Icons.campaign_outlined,
                                 title: 'E\'lonlar',
                                 subtitle: 'Yangiliklar',
-                                gradientColors: const [Color(0xFF8B5CF6), Color(0xFFA855F7)],
+                                gradientColors: const [
+                                  Color(0xFF8B5CF6),
+                                  Color(0xFFA855F7)
+                                ],
                                 onTap: () {
                                   context.push('/elonlar');
                                 },
@@ -300,8 +327,13 @@ class HomePage extends ConsumerWidget {
                                 icon: Icons.notifications_active_outlined,
                                 title: 'Eslatmalar',
                                 subtitle: 'Bildirishnomalar',
-                                gradientColors: const [Color(0xFFEC4899), Color(0xFFDB2777)],
-                                badgeCount: ref.watch(unreadEslatmalarCountProvider).value,
+                                gradientColors: const [
+                                  Color(0xFFEC4899),
+                                  Color(0xFFDB2777)
+                                ],
+                                badgeCount: ref
+                                    .watch(unreadEslatmalarCountProvider)
+                                    .value,
                                 onTap: () {
                                   context.push('/eslatmalar');
                                 },
@@ -310,7 +342,10 @@ class HomePage extends ConsumerWidget {
                                 icon: Icons.info_outline,
                                 title: 'Mahalla haqida',
                                 subtitle: 'Ma\'lumot',
-                                gradientColors: const [Color(0xFF06B6D4), Color(0xFF0891B2)],
+                                gradientColors: const [
+                                  Color(0xFF06B6D4),
+                                  Color(0xFF0891B2)
+                                ],
                                 onTap: () {
                                   context.push('/mahalla-info');
                                 },
@@ -319,7 +354,10 @@ class HomePage extends ConsumerWidget {
                                 icon: Icons.people_outline,
                                 title: 'Xodimlar',
                                 subtitle: 'Xodimlar ro\'yxati',
-                                gradientColors: const [Color(0xFF3B82F6), Color(0xFF2563EB)],
+                                gradientColors: const [
+                                  Color(0xFF3B82F6),
+                                  Color(0xFF2563EB)
+                                ],
                                 onTap: () {
                                   context.push('/xodimlar');
                                 },
@@ -342,10 +380,14 @@ class HomePage extends ConsumerWidget {
                                 icon: Icons.dashboard_outlined,
                                 title: 'Dashboard',
                                 subtitle: 'Umumiy ko\'rinish',
-                                gradientColors: const [Color(0xFF3B82F6), Color(0xFF2563EB)],
+                                gradientColors: const [
+                                  Color(0xFF3B82F6),
+                                  Color(0xFF2563EB)
+                                ],
                                 onTap: () {
                                   ScaffoldMessenger.of(context).showSnackBar(
-                                    const SnackBar(content: Text('Dashboard - Tez orada')),
+                                    const SnackBar(
+                                        content: Text('Dashboard - Tez orada')),
                                   );
                                 },
                               ),
@@ -353,7 +395,10 @@ class HomePage extends ConsumerWidget {
                                 icon: Icons.description_outlined,
                                 title: 'Arizalar',
                                 subtitle: 'Boshqarish',
-                                gradientColors: const [Color(0xFFF59E0B), Color(0xFFEF4444)],
+                                gradientColors: const [
+                                  Color(0xFFF59E0B),
+                                  Color(0xFFEF4444)
+                                ],
                                 onTap: () {
                                   context.push('/arizalar');
                                 },
@@ -362,7 +407,10 @@ class HomePage extends ConsumerWidget {
                                 icon: Icons.report_problem_outlined,
                                 title: 'Muammolar',
                                 subtitle: 'Boshqarish',
-                                gradientColors: const [Color(0xFFEF4444), Color(0xFFDC2626)],
+                                gradientColors: const [
+                                  Color(0xFFEF4444),
+                                  Color(0xFFDC2626)
+                                ],
                                 onTap: () {
                                   context.push('/muammolar');
                                 },
@@ -371,7 +419,10 @@ class HomePage extends ConsumerWidget {
                                 icon: Icons.campaign_outlined,
                                 title: 'E\'lonlar',
                                 subtitle: 'Boshqarish',
-                                gradientColors: const [Color(0xFF8B5CF6), Color(0xFFA855F7)],
+                                gradientColors: const [
+                                  Color(0xFF8B5CF6),
+                                  Color(0xFFA855F7)
+                                ],
                                 onTap: () {
                                   context.push('/elonlar');
                                 },
@@ -380,7 +431,10 @@ class HomePage extends ConsumerWidget {
                                 icon: Icons.people_outline,
                                 title: 'Xodimlar',
                                 subtitle: 'Boshqarish',
-                                gradientColors: const [Color(0xFF6366F1), Color(0xFF8B5CF6)],
+                                gradientColors: const [
+                                  Color(0xFF6366F1),
+                                  Color(0xFF8B5CF6)
+                                ],
                                 onTap: () {
                                   context.push('/xodimlar');
                                 },
@@ -389,7 +443,10 @@ class HomePage extends ConsumerWidget {
                                 icon: Icons.bar_chart_outlined,
                                 title: 'Hisobotlar',
                                 subtitle: 'Statistika va tahlil',
-                                gradientColors: const [Color(0xFF10B981), Color(0xFF059669)],
+                                gradientColors: const [
+                                  Color(0xFF10B981),
+                                  Color(0xFF059669)
+                                ],
                                 onTap: () {
                                   context.push('/admin/hisobotlar');
                                 },
@@ -398,7 +455,10 @@ class HomePage extends ConsumerWidget {
                                 icon: Icons.send_outlined,
                                 title: 'Eslatma yuborish',
                                 subtitle: 'Foydalanuvchilarga',
-                                gradientColors: const [Color(0xFFEC4899), Color(0xFFDB2777)],
+                                gradientColors: const [
+                                  Color(0xFFEC4899),
+                                  Color(0xFFDB2777)
+                                ],
                                 onTap: () {
                                   context.push('/yangi-eslatma');
                                 },
@@ -414,7 +474,7 @@ class HomePage extends ConsumerWidget {
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(16),
                             border: Border.all(
-                              color: Colors.red.withOpacity(0.3),
+                              color: Colors.red.withValues(alpha: 0.3),
                               width: 1.5,
                             ),
                           ),
@@ -422,14 +482,17 @@ class HomePage extends ConsumerWidget {
                             color: Colors.transparent,
                             child: InkWell(
                               onTap: () async {
-                                await ref.read(currentUserProvider.notifier).signOut();
+                                await ref
+                                    .read(currentUserProvider.notifier)
+                                    .signOut();
                                 if (context.mounted) {
                                   context.go('/login');
                                 }
                               },
                               borderRadius: BorderRadius.circular(16),
                               child: Padding(
-                                padding: const EdgeInsets.symmetric(vertical: 16),
+                                padding:
+                                    const EdgeInsets.symmetric(vertical: 16),
                                 child: Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
@@ -469,77 +532,6 @@ class HomePage extends ConsumerWidget {
     );
   }
 }
-
-class _MenuCard extends StatelessWidget {
-  final IconData icon;
-  final String title;
-  final String subtitle;
-  final Color color;
-  final VoidCallback onTap;
-
-  const _MenuCard({
-    required this.icon,
-    required this.title,
-    required this.subtitle,
-    required this.color,
-    required this.onTap,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Card(
-      elevation: 2,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(16),
-      ),
-      child: InkWell(
-        onTap: onTap,
-        borderRadius: BorderRadius.circular(16),
-        child: Padding(
-          padding: const EdgeInsets.all(12),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Container(
-                padding: const EdgeInsets.all(12),
-                decoration: BoxDecoration(
-                  color: color.withOpacity(0.1),
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                child: Icon(
-                  icon,
-                  size: 28,
-                  color: color,
-                ),
-              ),
-              const SizedBox(height: 8),
-              Text(
-                title,
-                style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                      fontWeight: FontWeight.bold,
-                    ),
-                textAlign: TextAlign.center,
-                maxLines: 2,
-                overflow: TextOverflow.ellipsis,
-              ),
-              const SizedBox(height: 2),
-              Text(
-                subtitle,
-                style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                      fontSize: 11,
-                    ),
-                textAlign: TextAlign.center,
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-}
-
 
 // Modern Menu Card with Gradient
 class _ModernMenuCard extends StatefulWidget {
@@ -600,7 +592,7 @@ class _ModernMenuCardState extends State<_ModernMenuCard>
           ),
           boxShadow: [
             BoxShadow(
-              color: widget.gradientColors[0].withOpacity(0.3),
+              color: widget.gradientColors[0].withValues(alpha: 0.3),
               blurRadius: 12,
               offset: const Offset(0, 6),
             ),
@@ -628,7 +620,7 @@ class _ModernMenuCardState extends State<_ModernMenuCard>
                       Container(
                         padding: const EdgeInsets.all(14),
                         decoration: BoxDecoration(
-                          color: Colors.white.withOpacity(0.2),
+                          color: Colors.white.withValues(alpha: 0.2),
                           borderRadius: BorderRadius.circular(16),
                         ),
                         child: Icon(
@@ -655,7 +647,9 @@ class _ModernMenuCardState extends State<_ModernMenuCard>
                             ),
                             child: Center(
                               child: Text(
-                                widget.badgeCount! > 99 ? '99+' : '${widget.badgeCount}',
+                                widget.badgeCount! > 99
+                                    ? '99+'
+                                    : '${widget.badgeCount}',
                                 style: const TextStyle(
                                   color: Colors.white,
                                   fontSize: 10,
@@ -683,7 +677,7 @@ class _ModernMenuCardState extends State<_ModernMenuCard>
                   Text(
                     widget.subtitle,
                     style: TextStyle(
-                      color: Colors.white.withOpacity(0.9),
+                      color: Colors.white.withValues(alpha: 0.9),
                       fontSize: 12,
                     ),
                     textAlign: TextAlign.center,
